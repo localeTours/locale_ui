@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 //import fire from './fire.js';
 import firebase from 'firebase';
 //var windowfire = fire;
+import App from './App';
+import Login from './login';
+
 
 export default class Authenticated extends Component{
 
@@ -21,11 +24,16 @@ export default class Authenticated extends Component{
   }
   render(){
     if(!this.state.userReady){
-      return(<div>Loading...</div>)
+      return(<div>Loading...
+          <Login/>
+        </div>)
+    } else {
+      return(
+        <div>
+          <App />
+        </div>
+      )
     }
-    return(
-      <div>
-      </div>
-    )
+
   }
 }
