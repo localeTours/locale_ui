@@ -20,7 +20,7 @@ class App extends Component {
     email:'email'
     });
     messagesRef.on('child_added', snapshot => {
-      
+
       /* Update React state when message is added at Firebase Database */
       let message = { text: snapshot.val().name };
       this.setState({ messages: [message].concat(this.state.messages) });
