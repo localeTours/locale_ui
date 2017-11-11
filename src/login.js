@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
+
 import firebase from 'firebase';
+import { signIn } from './actions';
+
 var provider = new firebase.auth.GoogleAuthProvider();
 
 
@@ -29,6 +35,8 @@ login(){
     return (
       <div>
         <button onClick={this.login.bind(this)}>Login</button>
+        <button onClick={() => this.props.signIn()}>Fake Sign In</button>
+        <Link to="/map">Go to map</Link>
       </div>
     )
 
@@ -37,4 +45,16 @@ login(){
 
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+  return ({
+    account: state.account
+  })
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    signIn: signIn
+  }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

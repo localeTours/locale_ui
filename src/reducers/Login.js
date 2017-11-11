@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+
 import LoginButton from '../login';
 
 class Login extends Component {
+
   render() {
     return (
       <div id="login">

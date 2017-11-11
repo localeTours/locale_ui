@@ -1,7 +1,7 @@
-export const manageAccount = (state = { signedIn: false }, action) => {
+export const manageAccount = (state = { isSignedIn: false }, action) => {
   switch (action.type) {
     case 'SIGN_IN':
-        return Object.assign({}, state, { signedIn: true });
+        return Object.assign({}, state, { isSignedIn: true });
     default:
       return state;
   }
