@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Redirect } from 'react-router-dom';
+import firebase from 'firebase';
 
 import { CustomMap } from './GoogleMap';
 import { setLatLng } from '../actions';
@@ -9,6 +10,15 @@ import { setLatLng } from '../actions';
 class MapContainer extends Component {
   componentWillMount() {
     this.props.setLatLng();
+    firebase.auth().onAuthStateChanged((user)=>{
+      if (user) {
+        debugger;
+        this.setState({userReady:true , uid:user.uid})
+      } else {
+        debugger;
+        this.setState({userReady:false})
+      }
+    })
   }
 
   render() {
@@ -27,7 +37,8 @@ class MapContainer extends Component {
             googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `100vh` }} />}
-            mapElement={<div style={{ height: `100%` }} />}
+            mapElement={<div style={{ height: `100%` }}
+            center={{lat: this.props.map.latLng.lat, lng: this.props.map.latLng.lng}}/>}
           />
         </div>
       )
