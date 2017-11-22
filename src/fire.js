@@ -9,6 +9,6 @@ import firebase from 'firebase';
     storageBucket: "testproject-945f4.appspot.com",
     messagingSenderId: "914949600545"
   };
-  firebase.initializeApp(config);
+  var fire = firebase.initializeApp(config);
 
-export default firebase;
+export default fire;

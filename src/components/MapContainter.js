@@ -12,10 +12,8 @@ class MapContainer extends Component {
     this.props.setLatLng();
     firebase.auth().onAuthStateChanged((user)=>{
       if (user) {
-        debugger;
         this.setState({userReady:true , uid:user.uid})
       } else {
-        debugger;
         this.setState({userReady:false})
       }
     })

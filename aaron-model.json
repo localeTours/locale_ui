@@ -1,0 +1,55 @@
+
+//All Docs
+{
+    "tours": "",
+    "Users": "" ,
+    "Checkpoints": ""
+}
+
+// Tour
+{
+    "id": "String",
+    "name": "String",
+    "Checkpoints": "Array",
+    "Creator": "User", -- Refrencing User Document 
+    "StartDate": "String",
+    "EndDate": "String",
+    "isPrivate": "Bool",
+    "image": "String",
+    "participants": "User" -- Referencing User Document 
+    "checkpoints": "Array of Checkpoints" -- Refrencing Checkpoint,
+    "hasToBeInOrderCheckpoints": "Bool"
+}
+
+// Checkpoint
+{
+    "longitude": "String",
+    "latitude": "String",
+    "content": [
+        {
+            "media": "String",
+            "message": "String"
+        }
+    ],
+    "isHidden": "Bool",
+    "order": "Number",
+    "tour": "Tour" -- Refrencing Tour Document
+}
+
+// User
+{
+    "name": "String",
+    "email": "String",
+    "pw": "String",
+    "created_tours": "Array of Tours",
+    "attending_tours": [
+        {
+            "tour": "TourId",
+            "checkpointsCompleted": "Array of Checkpoints",
+            "isCompleted": "Bool"
+        }
+    ],
+    "followers": "Array of Users",
+    "following": "Array of Users"
+} 
+
