@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import fire from "../fire";
-import { tourDb, auth } from "../services/db";
+import { tourDb, auth, userDb } from "../services/db";
+import CreateTour from "./createTour";
 
 class Dashboard extends Component {
 
@@ -47,23 +48,46 @@ class Dashboard extends Component {
         });
       }
     });
+
+    // userDb.add({
+    //   name: "Some User",
+    //   email: "some@mail.com",
+    //   created_tours: [
+    //     "12",
+    //     "1"
+    //   ],
+    //   attending_tours: [
+    //       {
+    //           tour: 123445566,
+    //           checkpointsCompleted: [
+    //             123,
+    //             456
+    //           ],
+    //           isCompleted: false
+    //       }
+    //   ]
+    // }).then((doc) => {
+    //   console.log(doc);
+    // }).catch((err) => {
+    //   console.log(err);
+    // });
     // Gets all Data
-    tourDb.get().then((docs) => {
-      docs.forEach((doc) => {
-        console.log(doc.data());
-      });
-    }).catch((err) => {
-      console.log(err)
-    })
+    // tourDb.get().then((docs) => {
+    //   docs.forEach((doc) => {
+    //     console.log(doc.data());
+    //   });
+    // }).catch((err) => {
+    //   console.log(err)
+    // })
 
     // Get Specific Data. Can use math operators like less than, greater than, equal to, etc
-    tourDb.where("name", "==", "yo").get().then((docs) => {
-      docs.forEach((doc) => {
-        console.log(doc.data());
-      });
-    }).catch((err) => {
-      console.log(err)
-    })
+    // tourDb.where("name", "==", "yo").get().then((docs) => {
+    //   docs.forEach((doc) => {
+    //     console.log(doc.data());
+    //   });
+    // }).catch((err) => {
+    //   console.log(err)
+    // })
   }
 
   render() {
@@ -72,11 +96,7 @@ class Dashboard extends Component {
         <p>This is the dashboard</p>
         {
           this.state.user ? 
-          <form onSubmit={this.submitToDb}>
-            <input name="tourName" onChange={this.handleChange} />
-            <input name="tourDescription" onChange={this.handleChange} />
-            <input type="submit" value="Submit" />
-          </form>
+          <CreateTour />
           :
           <p>You are not logged in</p>
         }

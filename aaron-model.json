@@ -16,7 +16,7 @@
     "EndDate": "String",
     "isPrivate": "Bool",
     "image": "String",
-    "participants": "User" -- Referencing User Document 
+    "participants": "User" -- Referencing User Document ,
     "checkpoints": "Array of Checkpoints" -- Refrencing Checkpoint,
     "hasToBeInOrderCheckpoints": "Bool"
 }
