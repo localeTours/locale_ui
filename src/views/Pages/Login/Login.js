@@ -3,7 +3,7 @@ import {Container, Row, Col, CardGroup, Card, CardBody, Button, Input, InputGrou
 import { Redirect } from 'react-router-dom';
 
 //SERVICE CALLS
-// import { auth } from '../../../fire';
+import firebase from '../../../fire';
 import { createUser } from "../../../services/users";
 
 //Redux dependencies and actions
@@ -12,11 +12,8 @@ import { withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { signIn } from '../../../actions';
 
-
-
-import firebase from '../../../fire';
+//Google Auth
 var provider = new firebase.auth.GoogleAuthProvider();
-
 
 class Login extends Component {
   constructor(){
@@ -37,7 +34,6 @@ class Login extends Component {
       }
 
   }
-
 
 
     login(){
