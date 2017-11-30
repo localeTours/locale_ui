@@ -2,6 +2,11 @@ import React, {Component} from 'react';
 import {Container, Row, Col, CardGroup, Card, CardBody, Button, Input, InputGroup, InputGroupAddon} from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 
+//SERVICE CALLS
+// import { auth } from '../../../fire';
+import { createUser } from "../../../services/users";
+
+//Redux dependencies and actions
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -34,14 +39,20 @@ class Login extends Component {
   }
 
 
+
     login(){
         var self = this;
         firebase.auth().signInWithPopup(provider).then(function(user) {
 
-        self.props.signIn(user);
-        localStorage.signedIn = true;
-        self.setState({
-                loggedIn: true
+         createUser(user).then((resp) => {
+             self.props.signIn(user);
+             localStorage.signedIn = true;
+             self.setState({
+                 loggedIn: true
+             });
+                console.log(self.state);
+            }).catch((err) => {
+                console.log(err);
             })
         }).catch(function(error) {
             // Handle Errors here.
