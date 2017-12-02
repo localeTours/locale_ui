@@ -1,6 +1,14 @@
 import React, {Component} from 'react';
 import {Row, Col, Card, CardHeader, CardBody, Button} from 'reactstrap';
 
+
+
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+// import { bindActionCreators } from 'redux';
+// import { signIn } from '../../actions';
+
+
 class Buttons extends Component {
   render() {
     return (
@@ -211,4 +219,14 @@ class Buttons extends Component {
   }
 }
 
-export default Buttons;
+
+const mapStateToProps = (state) => {
+    return({
+        isSignedIn: state.account.isSignedIn,
+        user: state.account.user
+    })
+}
+export default withRouter(connect(mapStateToProps)(Buttons));
+
+
+// export default Buttons;
