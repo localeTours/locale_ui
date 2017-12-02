@@ -59,7 +59,6 @@ class Full extends Component {
 
 
     render() {
-
         var signedIn = localStorage.signedIn ==="true" ? true : false;
 
         if(signedIn){
