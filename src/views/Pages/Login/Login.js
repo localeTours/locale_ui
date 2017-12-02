@@ -24,6 +24,7 @@ class Login extends Component {
   }
 
   componentWillMount(){
+      // This will check if the user has been signed in previously due to re-routing by manually changing the url.
     var self = this;
       if(this.props.signedIn || localStorage.signedIn) {
         if(!this.props.signedIn) {
@@ -42,6 +43,7 @@ class Login extends Component {
 
          createUser(user).then((resp) => {
              self.props.signIn(user);
+             localStorage.uid = user.user.uid;
              localStorage.signedIn = true;
              self.setState({
                  loggedIn: true
@@ -64,12 +66,12 @@ class Login extends Component {
 
 
   render() {
-
-      var signedIn = localStorage.signedIn ==="true" ? true : false;
+     var signedIn = localStorage.signedIn === 'true' ? true : false;
+      var userProfile = '/user/' + localStorage.uid;
 
     return (
         this.state.loggedIn || signedIn ?
-            <Redirect to='/'/>
+            <Redirect to={userProfile} />
             :
             <div className="app flex-row align-items-center">
               <Container>

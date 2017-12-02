@@ -4,6 +4,8 @@ export const manageAccount = (state = { isSignedIn: false, user: null }, action)
         return Object.assign({}, state, { isSignedIn: true, user:action.payload.user });
     case 'SIGN_OUT':
         localStorage.signedIn = false;
+        localStorage.uid = null;
+
         return Object.assign({}, state, { isSignedIn: false, user:null });
     default:
       return state;

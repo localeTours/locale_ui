@@ -14,6 +14,12 @@ import Widgets from '../../views/Widgets/';
 import firebase from '../../fire';
 
 
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { bindActionCreators } from 'redux';
+import { signIn } from '../../actions';
+
+
 // Components
 import Buttons from '../../views/Components/Buttons/';
 import Cards from '../../views/Components/Cards/';
@@ -38,18 +44,22 @@ class Full extends Component {
 
     componentWillMount(){
         var self = this;
-        // if(this.props.signedIn || localStorage.signedIn) {
-        //     if(!this.props.signedIn) {
-        //         firebase.auth().onAuthStateChanged((user)=> {
-        //             self.props.signIn(user)
-        //         })
-        //     }
-        // }
+        if(this.props.isSignedIn || localStorage.signedIn) {
+            if(!this.props.isSignedIn) {
+                firebase.auth().onAuthStateChanged((user)=> {
+                    var action = {user}
+                    self.props.signIn(action)
+                    this.setState({
+                        user: user
+                    });
+                })
+            }
+        }
     }
 
 
-
     render() {
+
         var signedIn = localStorage.signedIn ==="true" ? true : false;
 
         if(signedIn){
@@ -62,6 +72,7 @@ class Full extends Component {
                             <Breadcrumb />
                             <Container fluid>
                                 <Switch>
+                                    <Route path="/user/:id" name="Dashboard" component={Forms}/>
                                     <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                                     <Route path="/components/buttons" name="Buttons" component={Buttons}/>
                                     <Route path="/components/cards" name="Cards" component={Cards}/>
@@ -96,4 +107,20 @@ class Full extends Component {
   }
 }
 
-export default Full;
+
+
+const mapStateToProps = (state) => {
+    return({
+        isSignedIn: state.account.isSignedIn,
+        user: state.account.user
+    })
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        signIn: signIn
+    }, dispatch)
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Full));
+
