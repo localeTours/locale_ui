@@ -18,7 +18,10 @@ class Header extends Component {
 
   sidebarToggle(e) {
     e.preventDefault();
-    document.body.classList.toggle('sidebar-hidden');
+    //document.body.classList.toggle('sidebar-hidden');
+     // document.body.classList.toggle('sidebar-minimizer');
+      document.body.classList.toggle('sidebar-minimized');
+
   }
 
   sidebarMinimize(e) {
@@ -47,15 +50,6 @@ class Header extends Component {
           <span className="navbar-toggler-icon"></span>
         </NavbarToggler>
         <Nav className="d-md-down-none" navbar>
-          <NavItem className="px-3">
-            <NavLink href="#">Dashboard</NavLink>
-          </NavItem>
-          <NavItem className="px-3">
-            <NavLink href="#">Users</NavLink>
-          </NavItem>
-          <NavItem className="px-3">
-            <NavLink href="#">Settings</NavLink>
-          </NavItem>
         </Nav>
         <Nav className="ml-auto" navbar>
           <NavItem className="d-md-down-none">
