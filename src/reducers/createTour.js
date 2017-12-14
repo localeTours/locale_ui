@@ -1,5 +1,6 @@
 import React from "react";
-import { tourDb, checkDb } from "../services/db";
+import { Link } from "react-router-dom";
+import { auth, tourDb, checkDb } from "../services/db";
 
 
 export default class CreateTour extends React.Component {
@@ -8,41 +9,93 @@ export default class CreateTour extends React.Component {
         super();
 
         this.state = {
+            loading: false,
             tourName: "",
             checkpoints: [], 
             tourDescription: "",
             startDate: "",
             endDate: "",
             isPrivate: null,
-            inOrder: null 
+            inOrder: null
         }
+
+        this.tours = [];
 
         this.makeCheckpoint = this.makeCheckpoint.bind(this);
         this.createTourForm = this.createTourForm.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
+
+    componentWillMount(){
+        if(this.tours.length < 1){
+            this.setState({
+                loading: true
+            });
+            this.getTours();
+        }
+    }
+
+    getTours(){
+        tourDb.where("creator", "==", this.props.user).get().then((resp) => {
+            resp.forEach((tour) => {
+                var item = {
+                    id: tour.id,
+                    tour: tour.data().name
+                };
+                this.tours.push(item);
+            });
+
+            this.setState({
+                loading: false
+            });
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
     
     createTourForm(e){
         e.preventDefault();
-        // Adding checkpoints here. Still WIP
-        // checkDb.add({
-        //     last
-        // }).then(function(){
-
-        // })
+        var startDate = new Date(this.state.startDate).toLocaleDateString();
+        var endDate = new Date(this.state.endDate).toLocaleDateString();
+        var currentState = this.state;
+        var passedProps = this.props;
+        var checkIdArr = [];
         //Adding Tours to DB
-        // tourDb.add({
-        //     name: this.state.tourName,
-        //     description: this.state.tourDescription,
-        //     startDate: startDate,
-        //     endDate: endDate,
-        //     isPrivate: this.state.isPrivate,
-        //     inOrder: this.state.inOrder
-        //   }).then(function(doc){
-        //     console.log(doc);
-        //   }).catch(function(err){
-        //     console.log(err);
-        //   })
+        tourDb.add({
+            name: currentState.tourName,
+            description: currentState.tourDescription,
+            startDate: startDate,
+            endDate: endDate,
+            isPrivate: currentState.isPrivate,
+            inOrder: currentState.inOrder,
+            creator: passedProps.user
+          }).then(function(doc){
+            var docToUp = tourDb.doc(doc.id);
+            // Adding checkpoints here. Still WIP
+            currentState.checkpoints.forEach((check, i) => {
+                checkDb.add({
+                    name: check.checkpointName,
+                    longitude: check.long,
+                    latitude: check.lat,
+                    tour: doc.id
+                }).then(function(checkDoc){
+                    checkIdArr.push({
+                        checkpoint: checkDoc.id
+                    });
+                    return docToUp.update({
+                        checkpoints: checkIdArr
+                    });
+                }).then(function(res){
+                    console.log(res);
+                }).catch(function(err){
+                    console.log(err);
+                });
+            });
+            console.log(checkIdArr);
+            
+          }).catch(function(err){
+            console.log(err);
+          })
     }
 
     makeCheckpoint(e){
@@ -50,11 +103,12 @@ export default class CreateTour extends React.Component {
         e.preventDefault();
 
         var newArr = this.state.checkpoints.slice();
-        var coordinates = {
+        var data = {
+            checkpointName: this.refs.checkpointName.value,
             lat: this.refs.lat.value,
             long: this.refs.long.value
         };
-        newArr.push(coordinates);
+        newArr.push(data);
         
         this.setState({
             checkpoints: newArr
@@ -79,7 +133,15 @@ export default class CreateTour extends React.Component {
         // Tour form and Checkpoint form
         return (
             <div>
-                <form>
+                {
+                    this.state.loading ? 
+                    <h3>Loading....</h3> 
+                    : 
+                    this.tours.map((t, i) => 
+                        <Link key={i} to={"/tour/"+t.id}>{t.tour}</Link>
+                    )
+                } 
+                <form onSubmit={this.createTourForm}>
                     <label htmlFor="tourName">Tour Name</label>
                     <input onChange={this.handleChange} type="text" name="tourName" />
 
@@ -100,14 +162,13 @@ export default class CreateTour extends React.Component {
 
                     <label>Checkpoint(s):</label>
                     <input type="text" ref="checkpointName" />
-                    <input type="number" ref="order" />
                     <input type="number" ref="lat" />
                     <input type="number" ref="long" />
                     <ul>
                         {
                             this.state.checkpoints.length > 0 ?
                             this.state.checkpoints.map((check, index) => 
-                                <li key={index}>Checkpoint Name: {check.name}, Lat: {check.lat}, Long: {check.long}</li>
+                                <li key={index}>Checkpoint Name: {check.checkpointName}, Lat: {check.lat}, Long: {check.long}</li>
                             )
                             :
                             <li>No checkpoints</li>
@@ -115,7 +176,7 @@ export default class CreateTour extends React.Component {
                     </ul>
                     <button onClick={this.makeCheckpoint}>Make Checkpoint</button>
 
-                    <input type="submit" onSubmit={this.createTourForm} value="make tour" />
+                    <input type="submit" value="make tour" />
                 </form>
             </div>
         )

@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import Login from './Login';
 import MapContainer from '../components/MapContainter';
-import CreateTour from './createTour';
+import TourDetailComponent from "../components/tourDetail";
 
 const Main = ({ history }) => {
   return (
@@ -13,6 +13,7 @@ const Main = ({ history }) => {
         <Route exact path='/' component={Dashboard} />
         <Route path='/login' component={Login} />
         <Route path='/map' component={MapContainer} />
+        <Route path="/tour/:tour" component={TourDetailComponent} />
       </Switch>
     </main>
   )

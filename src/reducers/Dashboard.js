@@ -96,7 +96,7 @@ class Dashboard extends Component {
         <p>This is the dashboard</p>
         {
           this.state.user ? 
-          <CreateTour />
+          <CreateTour user={this.state.user.uid}/>
           :
           <p>You are not logged in</p>
         }
