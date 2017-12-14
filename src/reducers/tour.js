@@ -20,16 +20,6 @@ export default class TourComponent extends React.Component {
                     id: doc.id,
                     data: doc.data(),
                 };
-                tour.data.checkpoints = [];
-                doc.data().checkpoints.forEach(check => {
-                    if(typeof check == "object"){
-                        checkDb.doc(check.checkpoint).get().then((resp) => {
-                            tour.data.checkpoints.push(resp.data());
-                        }).catch((err) => {
-                            console.log(err);
-                        });
-                    }
-                });
                 newArr.push(tour);
                 this.setState({
                     tours: newArr
