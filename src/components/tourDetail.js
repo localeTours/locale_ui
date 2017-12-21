@@ -1,11 +1,18 @@
 import React from "react";
-import { tourDb, checkDb } from "../services/db";
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
 
-export default class TourDetailComponent extends React.Component{
+import { tourDb, checkDb } from "../services/db";
+import { selectTour } from "../actions";
+import TourdetailEdit from "./EditTour";
+
+
+class TourDetail extends React.Component{
     constructor(){
         super();
         this.state = {
-            loading: false
+            loading: false,
+            isEditVisible: false
         };
 
         this.tour = "";
@@ -17,6 +24,7 @@ export default class TourDetailComponent extends React.Component{
         });
         tourDb.doc(this.props.match.params.tour).get().then((resp) => {
             this.tour = resp.data();
+            this.props.selectTour({ currentTourId: resp.id, currentTour: resp.data() })
             this.tour.checkpoints.forEach(c => {
                 checkDb.doc(c.checkpoint).get().then((resp) => {
                     console.log(resp.data());
@@ -30,13 +38,20 @@ export default class TourDetailComponent extends React.Component{
         }).catch((err) => {
             console.log(err);
         });
+
+        this.handleEdit = this.handleEdit.bind(this);
+    }
+
+    handleEdit(e) {
+      e.preventDefault();
+      this.setState({isEditVisible: !this.state.isEditVisible})
     }
 
     render(){
         return (
             <div>
                 {
-                    this.state.loading ? 
+                    this.state.loading ?
                     <h3>Loading...</h3>
                     :
                     <div>
@@ -45,14 +60,33 @@ export default class TourDetailComponent extends React.Component{
                         <p>Checkpoints</p>
                         <ul>
                         {
-                            this.tour.checkpoints.map((c, i) => 
+                            this.tour.checkpoints.map((c, i) =>
                                 <li>{c.checkpoint}</li>
                             )
                         }
                         </ul>
+
+                        <button onClick={this.handleEdit}>Edit</button>
                     </div>
                 }
+                {this.state.isEditVisible ? <TourdetailEdit /> : null}
             </div>
         )
     }
 }
+
+const mapStateToProps = (state) => {
+  return ({
+    tour: state.tour
+  })
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    selectTour: selectTour
+  }, dispatch)
+}
+
+const connectedTourDeatil = connect(mapStateToProps, mapDispatchToProps)(TourDetail)
+
+export default connectedTourDeatil

@@ -18,3 +18,14 @@ export const signIn = () => {
     type: 'SIGN_IN'
   }
 }
+
+export const selectTour = (tourAndTourId) => {
+  return  {
+    type: 'SELECT_TOUR',
+    payload: tourAndTourId
+  }
+}
+
+export const updateTour = (editedTour) => {
+  debugger;
+}
