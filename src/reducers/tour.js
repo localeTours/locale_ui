@@ -18,7 +18,7 @@ export default class TourComponent extends React.Component {
             docs.forEach(doc => {
                 var tour = {
                     id: doc.id,
-                    data: doc.data(),
+                    data: doc.data().name,
                 };
                 newArr.push(tour);
                 this.setState({
@@ -39,7 +39,7 @@ export default class TourComponent extends React.Component {
                         <li>No tours Available</li>
                         :
                         this.state.tours.map((tour, i) => 
-                            <li key={i}><Link to={"/tour/"+tour.id}>{tour.data.name}</Link></li>
+                            <li key={i}><Link to={"/tour/"+tour.id}>{tour.data}</Link></li>
                         )
                     }
                 </ul>

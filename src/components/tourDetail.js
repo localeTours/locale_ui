@@ -5,27 +5,30 @@ export default class TourDetailComponent extends React.Component{
     constructor(){
         super();
         this.state = {
-            loading: false
+            loading: false,
+            tour: {}
         };
-
-        this.tour = "";
     }
 
     componentWillMount(){
         this.setState({
             loading: true
         });
-        tourDb.doc(this.props.match.params.tour).get().then((resp) => {
-            this.tour = resp.data();
-            this.tour.checkpoints.forEach(c => {
-                checkDb.doc(c.checkpoint).get().then((resp) => {
-                    console.log(resp.data());
-                }).catch((err) => {
-                    console.log(err);
-                })
+        tourDb.doc(this.props.match.params.tour).get().then((doc) => {
+            var tour = doc.data()
+            tour.checkpoints = [];
+            doc.data().checkpoints.forEach(check => {
+                if(typeof check == "object"){
+                    checkDb.doc(check.checkpoint).get().then((resp) => {
+                        tour.checkpoints.push(resp.data());
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+                }
             });
             this.setState({
-                loading: false
+                loading: false,
+                tour: tour
             });
         }).catch((err) => {
             console.log(err);
@@ -33,6 +36,7 @@ export default class TourDetailComponent extends React.Component{
     }
 
     render(){
+        console.log(this.state.tour);
         return (
             <div>
                 {
@@ -40,16 +44,14 @@ export default class TourDetailComponent extends React.Component{
                     <h3>Loading...</h3>
                     :
                     <div>
-                        <h3>{this.tour.name}</h3>
-                        <p>Description: {this.tour.description}</p>
+                        <h3>{this.state.tour.name}</h3>
+                        <p>Description: {this.state.tour.description}</p>
                         <p>Checkpoints</p>
-                        <ul>
                         {
-                            this.tour.checkpoints.map((c, i) => 
-                                <li>{c.checkpoint}</li>
+                            this.state.tour.checkpoints.map(c => 
+                                {console.log(c)}
                             )
                         }
-                        </ul>
                     </div>
                 }
             </div>

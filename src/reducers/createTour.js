@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { auth, tourDb, checkDb } from "../services/db";
+import { auth, tourDb, checkDb, storage } from "../services/db";
+import Dropzone from "react-dropzone"; 
 
 
 export default class CreateTour extends React.Component {
@@ -16,7 +17,8 @@ export default class CreateTour extends React.Component {
             startDate: "",
             endDate: "",
             isPrivate: null,
-            inOrder: null
+            inOrder: null,
+            imagePreviews: []
         }
 
         this.tours = [];
@@ -24,6 +26,7 @@ export default class CreateTour extends React.Component {
         this.makeCheckpoint = this.makeCheckpoint.bind(this);
         this.createTourForm = this.createTourForm.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.uploadImage = this.uploadImage.bind(this);
     }
 
     componentWillMount(){
@@ -79,8 +82,18 @@ export default class CreateTour extends React.Component {
                     latitude: check.lat,
                     tour: doc.id
                 }).then(function(checkDoc){
+                    var currentCheckImage = storage.child(checkDoc.id+"/"+currentState.imagePreviews[i].name).put(currentState.imagePreviews[i]);
+                    currentCheckImage.on("state_changed",
+                        function(snapshot) {
+                            console.log(snapshot)
+                        }, function(error) {
+                            console.log(error);
+                        }, function() {
+                            console.log("picture uploaded");
+                        });
                     checkIdArr.push({
-                        checkpoint: checkDoc.id
+                        checkpoint: checkDoc.id,
+                        image: checkDoc.id+"/"+currentState.imagePreviews[i].name
                     });
                     return docToUp.update({
                         checkpoints: checkIdArr
@@ -128,6 +141,13 @@ export default class CreateTour extends React.Component {
             [name]: value
         });
     }
+
+    uploadImage(files){
+        console.log(files);
+        this.setState({
+            imagePreviews: files
+        });
+    }
     
     render(){
         // Tour form and Checkpoint form
@@ -164,6 +184,9 @@ export default class CreateTour extends React.Component {
                     <input type="text" ref="checkpointName" />
                     <input type="number" ref="lat" />
                     <input type="number" ref="long" />
+                    <Dropzone multiple={true} accept="image/*" onDrop={this.uploadImage}>
+                        <p>Drop an image or click to select a file to upload.</p>
+                    </Dropzone>
                     <ul>
                         {
                             this.state.checkpoints.length > 0 ?
@@ -174,6 +197,16 @@ export default class CreateTour extends React.Component {
                             <li>No checkpoints</li>
                         }
                     </ul>
+                    <div>
+                        {
+                            this.state.imagePreviews.length > 0 ?
+                            this.state.imagePreviews.map(i => 
+                                <img src={i.preview} />
+                            )
+                            :
+                            <h5>No Images</h5>
+                        }
+                    </div>
                     <button onClick={this.makeCheckpoint}>Make Checkpoint</button>
 
                     <input type="submit" value="make tour" />
