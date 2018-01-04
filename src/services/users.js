@@ -56,3 +56,26 @@ export function createUser(result){
     })
   });
 }
+
+export function createUserWithEmail(result, username){
+  return new Promise((resolve, reject) => {
+    // Queries the user db and looks for a specific doc using the users Firebase UID
+    // Then returns if the user exists or has been addded
+    userDb.doc(result.uid).get().then((user) => {
+      if(user.exists == true){
+        resolve(user);
+      } else {
+        userDb.doc(result.uid).set({
+          email: result.email,
+          username: username
+        }).then((res) => {
+          resolve("added");
+        }).catch((err) => {
+          reject(err);
+        });
+      }
+    }).catch((err) => {
+      reject(err);
+    })
+  });
+}
