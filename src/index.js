@@ -16,14 +16,14 @@ import '../scss/core/_dropdown-menu-right.scss';
 import Full from './containers/Full/';
 
 // Views
-import Login from './views/Pages/Login/';
-import Register from './views/Pages/Register/';
-import Page404 from './views/Pages/Page404/';
-import Page500 from './views/Pages/Page500/';
+import Login from './frontend/views/Pages/Login/';
+import Register from './frontend/views/Pages/Register/';
+import Page404 from './frontend/views/Pages/Page404/';
+import Page500 from './frontend/views/Pages/Page500/';
 
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
-import reducers from './reducers';
+import reducers from './frontend/reducers';
 const rMiddleware = routerMiddleware(history);
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';

@@ -11,6 +11,7 @@ import Footer from '../../components/Footer/';
 import Dashboard from '../../views/Dashboard/';
 import Charts from '../../views/Charts/';
 import Widgets from '../../views/Widgets/';
+import Profile from '../../frontend/views/Profile';
 import firebase from '../../fire';
 
 
@@ -59,7 +60,6 @@ class Full extends Component {
 
 
     render() {
-
         var signedIn = localStorage.signedIn ==="true" ? true : false;
 
         if(signedIn){
@@ -72,7 +72,7 @@ class Full extends Component {
                             <Breadcrumb />
                             <Container fluid>
                                 <Switch>
-                                    <Route path="/user/:id" name="Dashboard" component={Forms}/>
+                                    <Route path="/user/:id" name="Profile" component={Profile}/>
                                     <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                                     <Route path="/components/buttons" name="Buttons" component={Buttons}/>
                                     <Route path="/components/cards" name="Cards" component={Cards}/>
@@ -86,7 +86,6 @@ class Full extends Component {
                                     <Route path="/icons/simple-line-icons" name="Simple Line Icons" component={SimpleLineIcons}/>
                                     <Route path="/widgets" name="Widgets" component={Widgets}/>
                                     <Route path="/charts" name="Charts" component={Charts}/>
-                                    <Route path="/test" name="Charts" component={Charts}/>
                                     <Redirect from="/" to="/dashboard"/>
                                 </Switch>
                             </Container>

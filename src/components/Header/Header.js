@@ -18,7 +18,11 @@ class Header extends Component {
 
   sidebarToggle(e) {
     e.preventDefault();
-    document.body.classList.toggle('sidebar-hidden');
+    //Clears the sidebar completely
+    //document.body.classList.toggle('sidebar-hidden');
+
+    //  Minimizes the sidebar
+    document.body.classList.toggle('sidebar-minimized');
   }
 
   sidebarMinimize(e) {

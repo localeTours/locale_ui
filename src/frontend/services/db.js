@@ -1,4 +1,4 @@
-import fire from "../fire";
+import fire from "../../fire";
 import "firebase/firestore";
 
 export const auth = fire.auth();
