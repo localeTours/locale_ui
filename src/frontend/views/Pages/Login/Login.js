@@ -4,14 +4,14 @@ Form, FormGroup, Label, FormText} from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 
 //SERVICE CALLS
-import firebase from '../../../fire';
+import firebase from '../../../../fire';
 import { createUser, createUserWithEmail } from "../../../services/users";
 
 //Redux dependencies and actions
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { signIn } from '../../../actions';
+import { signIn } from '../../../../actions/index';
 
 //Google Auth
 var provider = new firebase.auth.GoogleAuthProvider();
