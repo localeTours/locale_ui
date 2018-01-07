@@ -52,6 +52,8 @@ export const deleteCheckpoint = (id) => {
     type: 'DELETE_CHECKPOINT',
     payload: id
   }
+}
+
 export const signIn = (payload) => {
   return {
       type: 'SIGN_IN',
