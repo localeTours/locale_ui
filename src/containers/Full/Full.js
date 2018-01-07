@@ -11,7 +11,7 @@ import Footer from '../../components/Footer/';
 import Dashboard from '../../views/Dashboard/';
 import Charts from '../../views/Charts/';
 import Widgets from '../../views/Widgets/';
-import Profile from '../../views/Profile';
+import Profile from '../../frontend/views/Profile';
 import firebase from '../../fire';
 
 

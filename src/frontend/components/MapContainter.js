@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import firebase from 'firebase';
 
 import { CustomMap } from './GoogleMap';
-import { setLatLng } from '../actions';
+import { setLatLng } from '../../actions/index';
 
 class MapContainer extends Component {
   componentWillMount() {
