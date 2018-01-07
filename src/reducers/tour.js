@@ -11,7 +11,7 @@ export default class TourComponent extends React.Component {
             tours: []
         }
     }
-    
+
     componentDidMount(){
         var newArr = this.state.tours.slice();
         tourDb.get().then((docs) => {
@@ -35,10 +35,10 @@ export default class TourComponent extends React.Component {
             <div>
                 <ul>
                     {
-                        this.state.tours.length < 1 ? 
+                        this.state.tours.length < 1 ?
                         <li>No tours Available</li>
                         :
-                        this.state.tours.map((tour, i) => 
+                        this.state.tours.map((tour, i) =>
                             <li key={i}><Link to={"/tour/"+tour.id}>{tour.data.name}</Link></li>
                         )
                     }

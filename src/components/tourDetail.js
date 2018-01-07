@@ -59,7 +59,7 @@ class TourDetail extends React.Component{
         this.props.checkpoints.checkpoints.forEach((checkpoint) => {
           checkDb.doc(checkpoint.id).delete()
           .then(() => {
-            
+
           })
           .catch((err) => {
             console.log(err)

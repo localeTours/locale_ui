@@ -13,12 +13,6 @@ export const setLatLng = () => {
   }
 }
 
-export const signIn = () => {
-  return {
-    type: 'SIGN_IN'
-  }
-}
-
 export const selectTour = (tourAndTourId) => {
   return  {
     type: 'SELECT_TOUR',
@@ -58,4 +52,16 @@ export const deleteCheckpoint = (id) => {
     type: 'DELETE_CHECKPOINT',
     payload: id
   }
+export const signIn = (payload) => {
+  return {
+      type: 'SIGN_IN',
+      payload: payload
+  }
+}
+
+
+export const signOut = () => {
+    return {
+        type: 'SIGN_OUT'
+    }
 }
