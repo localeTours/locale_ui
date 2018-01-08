@@ -1,17 +1,23 @@
 import React from "react";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Link } from "react-router-dom";
+
 import { auth, tourDb, checkDb } from "../services/db";
+import firebase from '../../fire';
+import { signIn } from '../../actions';
 
 
-export default class CreateTour extends React.Component {
-    
+
+class CreateTour extends React.Component {
+
     constructor(){
         super();
 
         this.state = {
             loading: false,
             tourName: "",
-            checkpoints: [], 
+            checkpoints: [],
             tourDescription: "",
             startDate: "",
             endDate: "",
@@ -31,12 +37,22 @@ export default class CreateTour extends React.Component {
             this.setState({
                 loading: true
             });
-            this.getTours();
+            var self = this;
+              if(this.props.signedIn || localStorage.signedIn) {
+                if(!this.props.signedIn) {
+                    firebase.auth().onAuthStateChanged((user)=> {
+                        self.props.signIn(user)
+                        self.getTours();
+                        console.log(user);
+                    })
+                }
+              }
+
         }
     }
 
     getTours(){
-        tourDb.where("creator", "==", this.props.user).get().then((resp) => {
+        tourDb.where("creator", "==", this.props.account.user.uid).get().then((resp) => {
             resp.forEach((tour) => {
                 var item = {
                     id: tour.id,
@@ -49,10 +65,11 @@ export default class CreateTour extends React.Component {
                 loading: false
             });
         }).catch((err) => {
+          debugger;
             console.log(err);
         });
     }
-    
+
     createTourForm(e){
         e.preventDefault();
         var startDate = new Date(this.state.startDate).toLocaleDateString();
@@ -68,7 +85,7 @@ export default class CreateTour extends React.Component {
             endDate: endDate,
             isPrivate: currentState.isPrivate,
             inOrder: currentState.inOrder,
-            creator: passedProps.user
+            creator: this.props.account.user.uid
           }).then(function(doc){
             var docToUp = tourDb.doc(doc.id);
             // Adding checkpoints here. Still WIP
@@ -92,7 +109,7 @@ export default class CreateTour extends React.Component {
                 });
             });
             console.log(checkIdArr);
-            
+
           }).catch(function(err){
             console.log(err);
           })
@@ -109,7 +126,7 @@ export default class CreateTour extends React.Component {
             long: this.refs.long.value
         };
         newArr.push(data);
-        
+
         this.setState({
             checkpoints: newArr
         });
@@ -128,19 +145,19 @@ export default class CreateTour extends React.Component {
             [name]: value
         });
     }
-    
+
     render(){
         // Tour form and Checkpoint form
         return (
             <div>
                 {
-                    this.state.loading ? 
-                    <h3>Loading....</h3> 
-                    : 
-                    this.tours.map((t, i) => 
+                    this.state.loading ?
+                    <h3>Loading....</h3>
+                    :
+                    this.tours.map((t, i) =>
                         <Link key={i} to={"/tour/"+t.id}>{t.tour}</Link>
                     )
-                } 
+                }
                 <form onSubmit={this.createTourForm}>
                     <label htmlFor="tourName">Tour Name</label>
                     <input onChange={this.handleChange} type="text" name="tourName" />
@@ -167,7 +184,7 @@ export default class CreateTour extends React.Component {
                     <ul>
                         {
                             this.state.checkpoints.length > 0 ?
-                            this.state.checkpoints.map((check, index) => 
+                            this.state.checkpoints.map((check, index) =>
                                 <li key={index}>Checkpoint Name: {check.checkpointName}, Lat: {check.lat}, Long: {check.long}</li>
                             )
                             :
@@ -182,3 +199,19 @@ export default class CreateTour extends React.Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    account: state.account,
+    tour: state.tour
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    signIn: signIn
+  }, dispatch)
+}
+
+const connectedCreateTour = connect(mapStateToProps, mapDispatchToProps)(CreateTour)
+export default connectedCreateTour

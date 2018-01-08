@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { tourDb, checkDb } from "../services/db";
-import { selectTour } from "../actions";
-import { updateTour } from '../actions';
-import { updateCheckpointsWithEdit } from '../actions';
+import { selectTour } from "../../actions";
+import { updateTour } from '../../actions';
+import { updateCheckpointsWithEdit } from '../../actions';
 import CheckpointEdit from './EditCheckpoint'
 
 
