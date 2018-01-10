@@ -12,6 +12,8 @@ import Dashboard from '../../views/Dashboard/';
 import Charts from '../../views/Charts/';
 import Widgets from '../../views/Widgets/';
 import Profile from '../../frontend/views/Profile';
+import DJsPage from '../../views/DJsPage/';
+import myProfile from '../../views/DJsPage/myProfile';
 import firebase from '../../fire';
 
 
@@ -86,6 +88,9 @@ class Full extends Component {
                                     <Route path="/icons/simple-line-icons" name="Simple Line Icons" component={SimpleLineIcons}/>
                                     <Route path="/widgets" name="Widgets" component={Widgets}/>
                                     <Route path="/charts" name="Charts" component={Charts}/>
+                                    <Route path="/test" name="Charts" component={Charts}/>
+                                    <Route path="/DJsPage" name="DJs Pages" component={DJsPage}/>
+                                    <Route path="/myProfile" name="myProfile" component={myProfile}/>
                                     <Redirect from="/" to="/dashboard"/>
                                 </Switch>
                             </Container>
