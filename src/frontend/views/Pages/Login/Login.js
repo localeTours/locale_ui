@@ -11,7 +11,7 @@ import { createUser, createUserWithEmail } from "../../../services/users";
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { signIn } from '../../../../actions/index';
+import { signIn } from '../../../actions/index';
 
 //Google Auth
 var provider = new firebase.auth.GoogleAuthProvider();
