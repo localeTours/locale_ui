@@ -67,6 +67,8 @@
   .btn-lg {
     margin-top: - $input-btn-padding-y-lg;
   }
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
 }
 //
 .card-footer {
@@ -89,6 +91,7 @@
 [class*="card-outline-"] {
   .card-body {
     background: #fff !important;
+
   }
 
   &.card-outline-top {
@@ -185,9 +188,11 @@
   &.drag, .drag {
     cursor: move;
   }
+  border-radius: 9px;
 }
 
 .card-placeholder {
   background: rgba(0,0,0,.025);
   border: 1px dashed $gray-300;
 }
+

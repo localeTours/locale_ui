@@ -105,6 +105,37 @@ export default {
     },
     {
       title: true,
+      name: 'DJs workspace'
+    },
+    {
+      name: 'DJs Pages',
+      url: '/djpages',
+      icon: 'icon-rocket',
+      children: [
+        {
+          name: 'View A Tour',
+          url: '/DJsPage',
+          icon: 'icon-star'
+        },
+        {
+          name: 'Profile Page',
+          url: '/myProfile',
+          icon: 'icon-user'
+        },
+        {
+          name: 'Try Stuff',
+          url: '/stuff',
+          icon: 'icon-mustache'
+        },
+        {
+          name: 'Place holder land',
+          url: '/holder',
+          icon: 'icon-bulb'
+        }
+      ]
+    },
+    {
+      title: true,
       name: 'Extras'
     },
     {
@@ -133,19 +164,6 @@ export default {
           icon: 'icon-star'
         }
       ]
-    },
-    {
-      name: 'Download CoreUI',
-      url: 'http://coreui.io/react/',
-      icon: 'icon-cloud-download',
-      class: 'mt-auto',
-      variant: 'success'
-    },
-    {
-      name: 'Try CoreUI PRO',
-      url: 'http://coreui.io/pro/react/',
-      icon: 'icon-layers',
-      variant: 'danger'
     }
   ]
 };

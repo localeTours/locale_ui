@@ -8,7 +8,7 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { signOut } from '../../actions';
+import { signOut } from '../../frontend/actions';
 import { Redirect } from 'react-router-dom';
 
 
