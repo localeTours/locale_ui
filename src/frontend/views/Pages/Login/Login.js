@@ -62,17 +62,28 @@ class Login extends Component {
 
       firebase.auth().createUserWithEmailAndPassword(email, pass).then(function(user) {
           //console.log(user);
-       createUserWithEmail(user, username).then((resp) => {
-           self.props.signIn(user);
-           localStorage.uid = user.uid;
-           localStorage.signedIn = true;
-           self.setState({
-               loggedIn: true
-           });
-              console.log(self.state);
-          }).catch((err) => {
-              console.log(err);
-          })
+           createUserWithEmail(user, username).then((resp) => {
+               self.props.signIn(user);
+               localStorage.uid = user.uid;
+               localStorage.signedIn = true;
+               self.setState({
+                   loggedIn: true
+               });
+                  console.log(self.state);
+              }).catch((err) => {
+                  console.log(err);
+              })
+      }).then(function(){
+          var user = firebase.auth().currentUser;
+          var actionCodeSettings = {
+              url: 'http://localhost:8080/completeprof/' + firebase.auth().currentUser.iud
+          };
+
+          user.sendEmailVerification().then(function() {
+              //email sent
+            }).catch(function(error) {
+              console.log(error);
+            });
       }).catch(function(error) {
           // Handle Errors here.
           var errorCode = error.code;
