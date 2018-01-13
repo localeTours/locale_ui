@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import { auth, tourDb, checkDb } from "../services/db";
 import firebase from '../../fire';
-import { signIn } from '../../actions';
+import { signIn } from '../actions';
 
 
 
