@@ -11,9 +11,11 @@ class UserRegister extends React.Component {
         super();
         this.state={
             username: '',
-            profpic: ''
+            profpic: '',
+            complete: false
         }
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
+        this.handleOnChange = this.handleOnChange.bind(this);
     }
 
     handleOnChange(ev){
@@ -28,17 +30,21 @@ class UserRegister extends React.Component {
     }
 
     handleOnSubmit(){
-        let AboutMe = '/aboutme/' + localStorage.uid;
-        return(
-            <Redirect to={ AboutMe }/>
-        )
+        let self = this;
+        self.setState({
+            complete: true
+        })
     }
 
     render(){
         let stylishCard = {
             width: '50%'
         }
+        let aboutMe = '/aboutme/' + localStorage.uid;
         return(
+            this.state.complete ?
+                <Redirect to={aboutMe}/>
+            :
             <div className="app flex-row align-items-center">
               <Container style={ stylishCard }>
                 <Row className="justify-content-center">
@@ -59,9 +65,9 @@ class UserRegister extends React.Component {
                                     <input type="file" name='profpic'/>
                                         <FormGroup>
                                           <Label className=''>Enter a username</Label>
-                                          <Input type='text' name='username'/>
+                                          <Input type='text' name='username' onChange={this.handleOnChange}/>
                                         </FormGroup>
-                                      <Button className="btn-dark" >Next</Button>
+                                      <Button className="btn-dark">Next</Button>
                                     </FormGroup>
                                   </Form>
                                   </div>

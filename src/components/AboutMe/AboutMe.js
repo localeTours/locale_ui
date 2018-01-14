@@ -7,11 +7,43 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 
 class AboutMe extends React.Component {
+    constructor(){
+        super();
+        this.state={
+            aboutMe: '',
+            complete: false
+        }
+        this.handleOnSubmit = this.handleOnSubmit.bind(this);
+        this.handleOnChange = this.handleOnChange.bind(this);
+    }
+
+    handleOnChange(ev){
+        ev.preventDefault();
+        const target = ev.target;
+        const value = target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        })
+    }
+
+    handleOnSubmit(){
+        let self = this;
+        self.setState({
+            complete: true
+        })
+    }
+
     render(){
         let stylishCard = {
             width: '50%'
         }
+        let userProfile = '/user/' + localStorage.uid;
         return(
+            this.state.complete ?
+                <Redirect to={userProfile}/>
+            :
             <div className="app flex-row align-items-center">
               <Container style={ stylishCard }>
                 <Row className="justify-content-center">
@@ -22,8 +54,9 @@ class AboutMe extends React.Component {
                                   <div className='profile-form-two justify-content-center'>
                                     <Form>
                                       <FormGroup>
-                                        <Label>Tell us a little more about you</Label>
-                                        <Textarea maxlength="5000" placeholder="Type here..." required="required"> </Textarea>
+                                        <h4>Tell us a little more about you</h4>
+                                        <Input type="textarea" placeholder="I'm ..." maxLength="4000" name="aboutMe" autoFocus/><br/>
+                                        <Button className="btn-dark" onClick={ this.handleOnSubmit }>Next</Button>
                                       </FormGroup>
                                     </Form>
                                   </div>
