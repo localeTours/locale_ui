@@ -15,6 +15,8 @@ import Profile from '../../frontend/views/Profile';
 import Explore from '../../frontend/components/explore';
 import DJsPage from '../../views/DJsPage/';
 import myProfile from '../../views/DJsPage/myProfile';
+import UserRegister from '../../components/UserRegister/UserRegister';
+import AboutMe from '../../components/AboutMe/AboutMe';
 import firebase from '../../fire';
 
 
@@ -78,12 +80,13 @@ class Full extends Component {
                             <Breadcrumb />
                             <Container fluid>
                                 <Switch>
+                                    <Route path="/completeprof/:id" name="CompleteProfile" component={UserRegister}/>
+                                    <Route path="/aboutme/:id" name="AboutMe" component={AboutMe}/>
                                     <Route path="/user/:id" name="Profile" component={Profile}/>
                                     <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
-                                    <Route path="/explore" name="explore" component={Explore}/>                              
+                                    <Route path="/explore" name="explore" component={Explore}/>
                                     <Route path="/DJsPage" name="DJs Pages" component={DJsPage}/>
                                     <Route path="/myProfile" name="myProfile" component={myProfile}/>
-
                                     <Redirect from="/" to="/dashboard"/>
                                 </Switch>
                             </Container>
@@ -120,4 +123,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Full));
-
