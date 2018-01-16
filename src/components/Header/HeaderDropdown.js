@@ -6,13 +6,11 @@ import {
   DropdownToggle,
   NavDropdown
 } from 'reactstrap';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { signOut } from '../../actions';
-import { Redirect } from 'react-router-dom';
-
-
-
+import { Redirect, hashHistory } from 'react-router-dom';
 
 class HeaderDropdown extends Component {
 
@@ -31,6 +29,18 @@ class HeaderDropdown extends Component {
     });
   }
 
+  goToProfile() {
+    fetch('https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0')
+    .then((resp) => resp.blob())
+    .then((data) => {
+      const reader = new FileReader();
+      reader.onloadend = (e) => {
+        document.getElementById("test-image").setAttribute('src', e.target.result);
+      }
+      reader.readAsDataURL(data);
+    })
+  }
+
   logOut(){
       this.props.signOut();
       this.setState({
@@ -40,22 +50,30 @@ class HeaderDropdown extends Component {
   }
 
   dropAccnt() {
+    if(this.props.account.isSignedIn){
+      return (
+          !this.state.loggedOut ?
+        <NavDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+          <DropdownToggle nav>
+            <img id="test-image" src={this.props.account.user.photoURL} className="img-avatar" alt="admin@bootstrapmaster.com"/>
+          </DropdownToggle>
+          <DropdownMenu right>
+            <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
+            <DropdownItem onClick={this.goToProfile.bind(this)}>
+              <NavLink to={"/user/" + this.props.account.user.uid} activeClassName="active">
+                Profile
+              </NavLink>
+            </DropdownItem>
+            <DropdownItem onClick={this.logOut.bind(this)} ><i className="fa fa-lock"></i> Logout</DropdownItem>
+          </DropdownMenu>
+        </NavDropdown>
+              :
+         <Redirect to='/login'/>
+      );
+    } else {
+      return <p>Loading...</p>
+    }
 
-    return (
-        !this.state.loggedOut ?
-      <NavDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-        <DropdownToggle nav>
-          <img src={'img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
-        </DropdownToggle>
-        <DropdownMenu right>
-          <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
-
-          <DropdownItem onClick={this.logOut.bind(this)} ><i className="fa fa-lock"></i> Logout</DropdownItem>
-        </DropdownMenu>
-      </NavDropdown>
-            :
-       <Redirect to='/login'/>
-    );
 
   }
 
@@ -67,6 +85,12 @@ class HeaderDropdown extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    account: state.account
+  }
+}
+
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
@@ -74,7 +98,7 @@ const mapDispatchToProps = (dispatch) => {
     }, dispatch)
 }
 
-export default connect(undefined, mapDispatchToProps)(HeaderDropdown)
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderDropdown)
 
 
 // export default HeaderDropdown;

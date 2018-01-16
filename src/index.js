@@ -20,6 +20,7 @@ import Login from './frontend/views/Pages/Login/';
 import Register from './frontend/views/Pages/Register/';
 import Page404 from './frontend/views/Pages/Page404/';
 import Page500 from './frontend/views/Pages/Page500/';
+import Profile from './frontend/views/Profile';
 
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
