@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from "react-router-dom";
 
-import { auth, tourDb, checkDb } from "../services/db";
+import { auth, tourDb, checkDb, storageRef, userDb } from "../services/db";
 import firebase from '../../fire';
 import { signIn } from '../actions';
 
@@ -65,7 +65,6 @@ class CreateTour extends React.Component {
                 loading: false
             });
         }).catch((err) => {
-          debugger;
             console.log(err);
         });
     }
@@ -133,6 +132,17 @@ class CreateTour extends React.Component {
 
     }
 
+    _handleImageChange(e){
+
+        storageRef.child('UserProfileImages/' + this.props.account.user.uid).put(e.target.files[0]).then(function(snapshot) {
+            console.log('Uploaded a blob or file!');
+            this.setState({
+                userImage: snapshot.downLoadUrl
+            })
+        });
+    }
+
+
     handleChange(e){
         //For the inputs of the tour form
         e.preventDefault();
@@ -176,6 +186,13 @@ class CreateTour extends React.Component {
 
                     <label htmlFor="hasToBeInOrderCheckpoints">Checkpoints in Order?</label>
                     <input onChange={this.handleChange} type="checkbox" name="inOrder"/>
+
+
+                    Choose file
+                    <form onSubmit={this._handleUploadSubmit.bind(this)}>
+                        <input type="file" onChange={this._handleImageChange.bind(this)} />
+                    </form>
+
 
                     <label>Checkpoint(s):</label>
                     <input type="text" ref="checkpointName" />
