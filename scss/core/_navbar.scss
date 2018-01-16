@@ -31,8 +31,7 @@
   }
 
   .navbar-toggler-icon {
-    height: 23px;
-    background-image: $navbar-toggler-icon;
+
   }
 
   .navbar-nav {
@@ -68,6 +67,14 @@
         height: $navbar-height - 20px;
         margin: 0 10px;
       }
+    }
+
+  }
+
+  @media screen and (max-width: 990px) {
+    .navbar-toggler-icon  {
+      height: 23px;
+      background-image: $navbar-toggler-icon;
     }
   }
 

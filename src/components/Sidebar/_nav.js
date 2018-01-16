@@ -105,6 +105,37 @@ export default {
     },
     {
       title: true,
+      name: 'DJs workspace'
+    },
+    {
+      name: 'DJs Pages',
+      url: '/djpages',
+      icon: 'icon-rocket',
+      children: [
+        {
+          name: 'View A Tour',
+          url: '/DJsPage',
+          icon: 'icon-star'
+        },
+        {
+          name: 'Profile Page',
+          url: '/myProfile',
+          icon: 'icon-user'
+        },
+        {
+          name: 'Try Stuff',
+          url: '/stuff',
+          icon: 'icon-mustache'
+        },
+        {
+          name: 'Place holder land',
+          url: '/holder',
+          icon: 'icon-bulb'
+        }
+      ]
+    },
+    {
+      title: true,
       name: 'Extras'
     },
     {

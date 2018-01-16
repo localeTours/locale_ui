@@ -103,13 +103,13 @@ class Sidebar extends Component {
       <div className="sidebar">
         <SidebarHeader/>
         <SidebarForm/>
+        <SidebarMinimizer/>
         <nav className="sidebar-nav">
           <Nav>
             {navList(nav.items)}
           </Nav>
         </nav>
         <SidebarFooter/>
-        <SidebarMinimizer/>
       </div>
     )
   }
