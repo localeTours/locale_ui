@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { tourDb, checkDb } from "../services/db";
-
 import { deleteCheckpoint, selectTour, updateTour, updateEditCheckpoint } from '../actions';
 
 class CheckpointEdit extends React.Component{

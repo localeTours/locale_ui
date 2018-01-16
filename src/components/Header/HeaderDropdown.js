@@ -49,7 +49,7 @@ class HeaderDropdown extends Component {
         </DropdownToggle>
         <DropdownMenu right>
           <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
-
+            <DropdownItem ><i className="fa fa-lock"></i> Settings</DropdownItem>
           <DropdownItem onClick={this.logOut.bind(this)} ><i className="fa fa-lock"></i> Logout</DropdownItem>
         </DropdownMenu>
       </NavDropdown>
@@ -60,6 +60,7 @@ class HeaderDropdown extends Component {
   }
 
   render() {
+
     const {...attributes} = this.props;
     return (
       this.dropAccnt()
@@ -74,7 +75,15 @@ const mapDispatchToProps = (dispatch) => {
     }, dispatch)
 }
 
-export default connect(undefined, mapDispatchToProps)(HeaderDropdown)
+const mapStateToProps = (state) => {
+    return({
+        isSignedIn: state.account.isSignedIn,
+        user: state.account.user
+    })
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderDropdown)
 
 
 // export default HeaderDropdown;
