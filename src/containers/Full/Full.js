@@ -26,22 +26,13 @@ import { bindActionCreators } from 'redux';
 import { signIn } from '../../frontend/actions';
 
 
-//Components
 
 
-// Components
-import Buttons from '../../views/Components/Buttons/';
-import Cards from '../../views/Components/Cards/';
-import Forms from '../../views/Components/Forms/';
-import Modals from '../../views/Components/Modals/';
-import SocialButtons from '../../views/Components/SocialButtons/';
-import Switches from '../../views/Components/Switches/';
-import Tables from '../../views/Components/Tables/';
-import Tabs from '../../views/Components/Tabs/';
 
 // Icons
-import FontAwesome from '../../views/Icons/FontAwesome/';
-import SimpleLineIcons from '../../views/Icons/SimpleLineIcons/';
+
+import CreateTour from "../../frontend/components/createTour";
+import TourDetailComponent from "../../frontend/components/tourDetail";
 
 class Full extends Component {
   constructor(){
@@ -82,11 +73,15 @@ class Full extends Component {
                                 <Switch>
                                     <Route path="/completeprof/:id" name="CompleteProfile" component={UserRegister}/>
                                     <Route path="/aboutme/:id" name="AboutMe" component={AboutMe}/>
-                                    <Route path="/user/:id" name="Profile" component={Profile}/>
+                                    <Route path="/user/:id" name="Profile"   component={Profile}/>
                                     <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                                     <Route path="/explore" name="explore" component={Explore}/>
                                     <Route path="/DJsPage" name="DJs Pages" component={DJsPage}/>
                                     <Route path="/myProfile" name="myProfile" component={myProfile}/>
+
+                                    <Route path="/explore" name="explore" component={Explore}/>
+                                    <Route path="/createTour" name="Create Tour" component={CreateTour} />
+                                    <Route exact path="/tour/:tour" name="Tour" component={TourDetailComponent} />
                                     <Redirect from="/" to="/dashboard"/>
                                 </Switch>
                             </Container>
@@ -123,3 +118,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Full));
+
