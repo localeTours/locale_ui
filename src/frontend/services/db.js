@@ -10,3 +10,6 @@ export const userDb = db.collection("users");
 export const tourDb = db.collection("tours");
 
 export const checkDb = db.collection("checkpoints");
+
+export const storageRef = fire.storage().ref();
+

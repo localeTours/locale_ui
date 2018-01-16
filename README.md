@@ -7,4 +7,3 @@
 ## Running project
 
 npm start
-
