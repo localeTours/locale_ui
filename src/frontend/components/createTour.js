@@ -42,8 +42,7 @@ class CreateTour extends React.Component {
                 if(!this.props.signedIn) {
                     firebase.auth().onAuthStateChanged((user)=> {
                         self.props.signIn(user)
-                        self.getTours();
-                        console.log(user);
+                        self.getTours(user);
                     })
                 }
               }
@@ -51,8 +50,9 @@ class CreateTour extends React.Component {
         }
     }
 
-    getTours(){
-        tourDb.where("creator", "==", this.props.account.user.uid).get().then((resp) => {
+
+    getTours(user){
+        tourDb.where("creator", "==", user.uid).get().then((resp) => {
             resp.forEach((tour) => {
                 var item = {
                     id: tour.id,
@@ -189,7 +189,7 @@ class CreateTour extends React.Component {
 
 
                     Choose file
-                    <form onSubmit={this._handleUploadSubmit.bind(this)}>
+                    <form >
                         <input type="file" onChange={this._handleImageChange.bind(this)} />
                     </form>
 
