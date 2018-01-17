@@ -13,8 +13,7 @@ import Charts from '../../views/Charts/';
 import Widgets from '../../views/Widgets/';
 import Profile from '../../frontend/views/Profile';
 import Explore from '../../frontend/components/explore';
-import DJsPage from '../../views/DJsPage/';
-import myProfile from '../../views/DJsPage/myProfile';
+import myProfile from '../../frontend/components/myProfile';
 import UserRegister from '../../components/UserRegister/UserRegister';
 import AboutMe from '../../components/AboutMe/AboutMe';
 import firebase from '../../fire';
@@ -76,7 +75,6 @@ class Full extends Component {
                                     <Route path="/user/:id" name="Profile"   component={Profile}/>
                                     <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                                     <Route path="/explore" name="explore" component={Explore}/>
-                                    <Route path="/DJsPage" name="DJs Pages" component={DJsPage}/>
                                     <Route path="/myProfile" name="myProfile" component={myProfile}/>
 
                                     <Route path="/explore" name="explore" component={Explore}/>
