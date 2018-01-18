@@ -209,7 +209,7 @@ class CreateTour extends React.Component {
                         <input onChange={this.handleChange} type="checkbox" name="isPrivate"/>
                       </div>
                       <div>
-                        <label htmlFor="reactions">Date/Time</label>
+                        <label htmlFor="date-time">Date/Time</label>
                         <input type='checkbox' />
                       </div>
                     </div>
@@ -220,11 +220,13 @@ class CreateTour extends React.Component {
                     <textarea onChange={this.handleChange} type="text" name="tourDescription" maxLength='5000'/>
                   </div>
 
+                  <div className='start-end-date-container'>
                     <label htmlFor="startDate">Start Date</label>
                     <input onChange={this.handleChange} type="date" name="startDate"/>
 
                     <label htmlFor="endDate">End Date</label>
                     <input onChange={this.handleChange} type="date" name="endDate"/>
+                  </div>
 
                     {/* <label htmlFor="isPrivate">Is Private?</label>
                     <input onChange={this.handleChange} type="checkbox" name="isPrivate"/> */}
@@ -233,8 +235,8 @@ class CreateTour extends React.Component {
                     <input onChange={this.handleChange} type="checkbox" name="inOrder"/> */}
 
 
-                    <div>
-                      Choose file
+                    <div className='file-select-container'>
+                        {/* <label className=''>Choose file</label> */}
                         <input type="file" onChange={this._handleImageChange.bind(this)} />
                     </div>
 
