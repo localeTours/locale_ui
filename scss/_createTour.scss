@@ -1,0 +1,64 @@
+.create-tour-container {
+  .tour-form {
+    text-align: center;
+    // padding: 20px 100px;
+    width: 70%;
+    margin: 0 auto;
+    .tourName {
+      display: block;
+      margin: 0 auto 10px auto;
+    }
+    input {
+      border: none;
+    }
+    .tour-features-container {
+      display: flex;
+      justify-content: center;
+      // align-items: center;
+      overflow: auto;
+      .left-checkboxes {
+        width: 30%;
+        padding: 10px;
+        display: inline-block;
+        float: left;
+        text-align: right;
+        input[type=checkbox] {
+          margin-left: 20px;
+        }
+      }
+      .right-checkboxes {
+        width: 20%;
+        padding: 10px;
+        float: left;
+        text-align: left;
+        input[type=checkbox] {
+          float: right;
+          margin-right: 20px;
+        }
+      }
+    }
+    .tour-description {
+      margin: 10px;
+      label {
+        margin-top: 10px;
+      }
+      textarea {
+        display: block;
+        margin: 0 auto;
+      }
+    }
+  }
+  .tour-footer-btns {
+    .cancel-btn {
+      display: inline-block;
+    }
+    .next-btn {
+      float: right;
+      background-color: $gray-200;
+      color: white;
+      &:hover {
+        background-color: $gray-400;
+      }
+    }
+  }
+}
