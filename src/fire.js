@@ -8,7 +8,8 @@ import firebase from 'firebase';
         projectId: "locale-dev",
         storageBucket: "locale-dev.appspot.com",
         messagingSenderId: "31609653821"
-    };
+    }
+
   firebase.initializeApp(config);
 
 export default firebase;

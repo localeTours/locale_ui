@@ -1,1 +1,22 @@
 // Here you can add other styles
+.profile-form-one {
+  text-align: center;
+  display: flex;
+    align-items: center;
+    justify-content: center;
+  .profile-bg {
+    background-color: white;
+    border-radius: 50%;
+    height: 150px;
+    width: 150px;
+    display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      left: 20%;
+  }
+}
+
+.profile-form-two {
+
+}

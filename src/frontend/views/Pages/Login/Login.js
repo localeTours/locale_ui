@@ -64,6 +64,7 @@ class Login extends Component {
           //console.log(user);
            createUserWithEmail(user, username).then((resp) => {
                self.props.signIn(user);
+               localStorage.userName = username;
                localStorage.uid = user.uid;
                localStorage.signedIn = true;
                self.setState({
@@ -103,6 +104,7 @@ class Login extends Component {
 
          createUser(user).then((resp) => {
              self.props.signIn(user);
+             localStorage.userName = user.displayName;
              localStorage.uid = user.user.uid;
              localStorage.signedIn = true;
              self.setState({
@@ -126,18 +128,22 @@ class Login extends Component {
 
   render() {
      var signedIn = localStorage.signedIn === 'true' ? true : false;
-      var userProfile = '/user/' + localStorage.uid;
+      //var userProfile = '/user/' + localStorage.uid;
+      let completeProf = '/completeprof/' + localStorage.uid;
 
+      let stylishCard = {
+          width: '50%'
+      }
     return (
         this.state.loggedIn || signedIn ?
-            <Redirect to={userProfile} />
+            <Redirect to={completeProf} />
             :
             <div className="app flex-row align-items-center">
-              <Container>
+              <Container style={ stylishCard }>
                 <Row className="justify-content-center">
                     <Col xs="12">
                         <CardGroup>
-                            <Card className="text-white bg-success py-5 d-md-down-none p-4" >
+                            <Card  className="text-black bg-secondary py-5 d-md-down-none p-4" >
                                 <CardBody className="text-center">
                                   <div>
                                       <h2>Sign-Up</h2>
@@ -154,7 +160,7 @@ class Login extends Component {
                                             <Label>Password</Label>
                                             <Input type="password" name="pass" placeholder="password" onChange={ this.handleOnChange } />
                                           </FormGroup>
-                                          <Button onClick={ this.handleOnSubmit }>Submit</Button>
+                                          <Button onClick={ this.handleOnSubmit } className="btn-dark">Submit</Button>
                                       </Form><br/>
                                   <h2>Sign-Up With Google</h2>
                                       <Button className="btn-google-plus" block onClick={this.login.bind(this)}><span>Google</span></Button>
