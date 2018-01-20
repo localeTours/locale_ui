@@ -20,12 +20,9 @@ import Login from './frontend/views/Pages/Login/';
 import Register from './frontend/views/Pages/Register/';
 import Page404 from './frontend/views/Pages/Page404/';
 import Page500 from './frontend/views/Pages/Page500/';
-<<<<<<< HEAD
 import Profile from './frontend/views/Profile';
-=======
 import CreateTour from './frontend/components/createTour';
 import TourDetailComponent from "./frontend/components/tourDetail";
->>>>>>> 88e4cedefa362450cdd769a0c34c308299b5a856
 
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';

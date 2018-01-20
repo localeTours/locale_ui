@@ -133,15 +133,21 @@ class CreateTour extends React.Component {
     }
 
     _handleImageChange(e){
-
-        storageRef.child('UserProfileImages/' + this.props.account.user.uid).put(e.target.files[0]).then(function(snapshot) {
+        storageRef.child('UserProfileImages/' + this.props.account.user.uid).put(e.target.files[0]).then((snapshot) => {
             console.log('Uploaded a blob or file!');
+            debugger;
             this.setState({
-                userImage: snapshot.downLoadUrl
+                userImage: snapshot.downloadURL
+            })
+            userDb.doc(this.props.account.user.uid).update({
+              profileImage: snapshot.downloadURL
             })
         });
     }
 
+    _handleUploadSubmit(e){
+
+    }
 
     handleChange(e){
         //For the inputs of the tour form

@@ -9,16 +9,8 @@ import {
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-<<<<<<< HEAD
-import { signOut } from '../../actions';
 import { Redirect, hashHistory } from 'react-router-dom';
-=======
 import { signOut } from '../../frontend/actions';
-import { Redirect } from 'react-router-dom';
-
-
-
->>>>>>> 88e4cedefa362450cdd769a0c34c308299b5a856
 
 class HeaderDropdown extends Component {
 

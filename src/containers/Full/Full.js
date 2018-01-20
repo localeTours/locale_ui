@@ -45,8 +45,7 @@ class Full extends Component {
         if(this.props.isSignedIn || localStorage.signedIn) {
             if(!this.props.isSignedIn) {
                 firebase.auth().onAuthStateChanged((user)=> {
-                    var action = {user}
-                    self.props.signIn(action)
+                    self.props.signIn(user)
                     this.setState({
                         user: user
                     });
@@ -114,4 +113,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Full));
-
