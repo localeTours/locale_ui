@@ -5,27 +5,18 @@ import { Link } from "react-router-dom";
 
 import { auth, tourDb, checkDb, storageRef, userDb } from "../services/db";
 import firebase from '../../fire';
-import { signIn } from '../actions';
-
-
+import { signIn,
+         updateCreateTour,
+         getTours,
+         addCheckpoint,
+         createTour } from '../actions';
 
 class CreateTour extends React.Component {
-
     constructor(){
         super();
-
         this.state = {
-            loading: false,
-            tourName: "",
-            checkpoints: [],
-            tourDescription: "",
-            startDate: "",
-            endDate: "",
-            isPrivate: null,
-            inOrder: null
+            loading: false
         }
-
-        this.tours = [];
 
         this.makeCheckpoint = this.makeCheckpoint.bind(this);
         this.createTourForm = this.createTourForm.bind(this);
@@ -33,7 +24,7 @@ class CreateTour extends React.Component {
     }
 
     componentWillMount(){
-        if(this.tours.length < 1){
+        if(this.props.account.tours.length < 1){
             this.setState({
                 loading: true
             });
@@ -42,100 +33,45 @@ class CreateTour extends React.Component {
                 if(!this.props.signedIn) {
                     firebase.auth().onAuthStateChanged((user)=> {
                         self.props.signIn(user)
-                        self.getTours(user);
+                        self.props.getTours(user.uid)
                     })
                 }
               }
-
         }
-    }
-
-
-    getTours(user){
-        tourDb.where("creator", "==", user.uid).get().then((resp) => {
-            resp.forEach((tour) => {
-                var item = {
-                    id: tour.id,
-                    tour: tour.data().name
-                };
-                this.tours.push(item);
-            });
-
-            this.setState({
-                loading: false
-            });
-        }).catch((err) => {
-            console.log(err);
-        });
     }
 
     createTourForm(e){
         e.preventDefault();
-        var startDate = new Date(this.state.startDate).toLocaleDateString();
-        var endDate = new Date(this.state.endDate).toLocaleDateString();
-        var currentState = this.state;
+        var createTour = this.props.tour.createTour;
+        var startDate = new Date(createTour.startDate).toLocaleDateString();
+        var endDate = new Date(createTour.endDate).toLocaleDateString();
         var passedProps = this.props;
-        var checkIdArr = [];
-        //Adding Tours to DB
-        tourDb.add({
-            name: currentState.tourName,
-            description: currentState.tourDescription,
-            startDate: startDate,
-            endDate: endDate,
-            isPrivate: currentState.isPrivate,
-            inOrder: currentState.inOrder,
-            creator: this.props.account.user.uid
-          }).then(function(doc){
-            var docToUp = tourDb.doc(doc.id);
-            // Adding checkpoints here. Still WIP
-            currentState.checkpoints.forEach((check, i) => {
-                checkDb.add({
-                    name: check.checkpointName,
-                    longitude: check.long,
-                    latitude: check.lat,
-                    tour: doc.id
-                }).then(function(checkDoc){
-                    checkIdArr.push({
-                        checkpoint: checkDoc.id
-                    });
-                    return docToUp.update({
-                        checkpoints: checkIdArr
-                    });
-                }).then(function(res){
-                    console.log(res);
-                }).catch(function(err){
-                    console.log(err);
-                });
-            });
-            console.log(checkIdArr);
-
-          }).catch(function(err){
-            console.log(err);
-          })
+        var createdTour = {
+          name: createTour.tourName,
+          description: createTour.tourDescription,
+          startDate: startDate,
+          endDate: endDate,
+          isPrivate: createTour.isPrivate,
+          inOrder: createTour.inOrder,
+          creator: this.props.account.user.uid
+        }
+        this.props.createTour({tour: createdTour, checkpoints: this.props.checkpoints.checkpoints})
     }
 
     makeCheckpoint(e){
         //Makes the checkpoint then adds to checkpoint state
         e.preventDefault();
-
-        var newArr = this.state.checkpoints.slice();
         var data = {
             checkpointName: this.refs.checkpointName.value,
             lat: this.refs.lat.value,
             long: this.refs.long.value
         };
-        newArr.push(data);
-
-        this.setState({
-            checkpoints: newArr
-        });
-
+        this.props.addCheckpoint(data);
     }
 
     _handleImageChange(e){
         storageRef.child('UserProfileImages/' + this.props.account.user.uid).put(e.target.files[0]).then((snapshot) => {
             console.log('Uploaded a blob or file!');
-            debugger;
             this.setState({
                 userImage: snapshot.downloadURL
             })
@@ -144,9 +80,31 @@ class CreateTour extends React.Component {
             })
         });
     }
-
     _handleUploadSubmit(e){
+    }
 
+    showtours() {
+      if(this.props.account.tours.length > 0){
+        return (
+          this.props.account.tours.map((t, i) =>
+              <Link key={i} to={"/tour/"+t.id}>{t.tour}</Link>
+          )
+        )
+      } else {
+        return <h3>Loading...</h3>
+      }
+    }
+
+    showCheckpoints() {
+      if(this.props.checkpoints.checkpoints.length > 0){
+        return (
+          this.props.checkpoints.checkpoints.map((check, i) =>
+            <li key={i}>Checkpoint Name: {check.checkpointName}, Lat: {check.lat}, Long: {check.long}</li>
+          )
+        )
+      } else {
+          return <li>No checkpoints</li>
+      }
     }
 
     handleChange(e){
@@ -156,24 +114,14 @@ class CreateTour extends React.Component {
         const target = e.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-
-        this.setState({
-            [name]: value
-        });
+        this.props.updateCreateTour({ [name]: value })
     }
 
     render(){
         // Tour form and Checkpoint form
         return (
             <div>
-                {
-                    this.state.loading ?
-                    <h3>Loading....</h3>
-                    :
-                    this.tours.map((t, i) =>
-                        <Link key={i} to={"/tour/"+t.id}>{t.tour}</Link>
-                    )
-                }
+                {this.showtours()}
                 <form onSubmit={this.createTourForm}>
                     <label htmlFor="tourName">Tour Name</label>
                     <input onChange={this.handleChange} type="text" name="tourName" />
@@ -205,14 +153,7 @@ class CreateTour extends React.Component {
                     <input type="number" ref="lat" />
                     <input type="number" ref="long" />
                     <ul>
-                        {
-                            this.state.checkpoints.length > 0 ?
-                            this.state.checkpoints.map((check, index) =>
-                                <li key={index}>Checkpoint Name: {check.checkpointName}, Lat: {check.lat}, Long: {check.long}</li>
-                            )
-                            :
-                            <li>No checkpoints</li>
-                        }
+                        {this.showCheckpoints()}
                     </ul>
                     <button onClick={this.makeCheckpoint}>Make Checkpoint</button>
 
@@ -226,13 +167,18 @@ class CreateTour extends React.Component {
 const mapStateToProps = (state) => {
   return {
     account: state.account,
-    tour: state.tour
+    tour: state.tour,
+    checkpoints: state.checkpoints
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    signIn: signIn
+    signIn: signIn,
+    updateCreateTour: updateCreateTour,
+    getTours: getTours,
+    addCheckpoint: addCheckpoint,
+    createTour: createTour
   }, dispatch)
 }
 

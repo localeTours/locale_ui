@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 import { tourDb, checkDb } from "../services/db";
-import { selectCheckpoints, selectTour } from '../actions';
+import { selectCheckpoints, selectTour, selectTourAndCheckpoints } from '../actions';
 import TourdetailEdit from "./EditTour";
 
 
@@ -24,32 +24,7 @@ class TourDetail extends React.Component{
         this.setState({
             loading: true
         });
-        tourDb.doc(this.props.match.params.tour).get().then((resp) => {
-            this.tour = resp.data();
-            this.props.selectTour({ currentTourId: resp.id, currentTour: resp.data() })
-            var checkpoints = []
-            this.tour.checkpoints.forEach(c => {
-                checkDb.doc(c.checkpoint).get().then((resp) => {
-                  var checkpoint = resp.data();
-                  checkpoints.push({
-                    id: resp.id,
-                    lat: checkpoint.latitude,
-                    long: checkpoint.longitude,
-                    name: checkpoint.name
-                  })
-                    console.log(resp.data());
-                }).catch((err) => {
-                    console.log(err);
-                })
-            });
-            this.props.selectCheckpoints(checkpoints)
-            this.setState({
-                loading: false
-            });
-        }).catch((err) => {
-            console.log(err);
-        });
-
+        this.props.selectTourAndCheckpoints(this.props.match.params.tour);
         this.handleEdit = this.handleEdit.bind(this);
     }
 
@@ -70,6 +45,15 @@ class TourDetail extends React.Component{
       });
     }
 
+    mapCheckpoints() {
+      if(this.props.checkpoints){
+        var checkpoints = this.props.checkpoints.checkpoints.map((c, i) => {
+          return <li key={i}>{c.name}</li>
+        })
+        return checkpoints
+      }
+    }
+
     updateEditVisible() {
       this.setState({
         isEditVisible: !this.state.isEditVisible
@@ -82,10 +66,11 @@ class TourDetail extends React.Component{
     }
 
     render(){
+
         return (
             <div>
                 {
-                    this.state.loading ?
+                    this.props.checkpoints.checkpoints.length === 0 ?
                     <h3>Loading...</h3>
                     :
                     <div>
@@ -93,11 +78,7 @@ class TourDetail extends React.Component{
                         <p>Description: {this.props.tour.currentTour.description}</p>
                         <p>Checkpoints</p>
                         <ul>
-                        {
-                            this.tour.checkpoints.map((c, i) =>
-                                <li>{c.checkpoint}</li>
-                            )
-                        }
+                          {this.mapCheckpoints()}
                         </ul>
 
                         <button onClick={this.handleEdit}>Edit</button>
@@ -112,14 +93,16 @@ class TourDetail extends React.Component{
 
 const mapStateToProps = (state) => {
   return ({
-    tour: state.tour
+    tour: state.tour,
+    checkpoints: state.checkpoints
   })
 }
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     selectTour: selectTour,
-    selectCheckpoints: selectCheckpoints
+    selectCheckpoints: selectCheckpoints,
+    selectTourAndCheckpoints: selectTourAndCheckpoints
   }, dispatch)
 }
 

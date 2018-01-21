@@ -2,6 +2,11 @@ export const manageCheckpoints = (state = {checkpoints: [], editCheckpoints: []}
   switch (action.type) {
     case 'SELECT_CHECKPOINTS':
       return {checkpoints: action.payload, editCheckpoints: action.payload}
+    case 'SELECT_CHECKPOINT':
+      return { checkpoints: [action.payload, ...state.checkpoints], editCheckpoints: [action.payload, ...state.editCheckpoints] }
+    case 'ADD_CHECKPOINT':
+      var updatedChkpntArr = [...state.checkpoints, action.payload]
+      return { checkpoints: updatedChkpntArr, editCheckpoints: updatedChkpntArr}
     case 'UPDATE_EDIT_CHECKPOINT':
       var updatedEdit = state.editCheckpoints.map((checkpoint) => {
         if(checkpoint.id === action.payload.id) {
