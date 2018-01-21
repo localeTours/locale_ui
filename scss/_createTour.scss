@@ -1,0 +1,82 @@
+.create-tour-container {
+  .tour-form {
+    text-align: center;
+    // padding: 20px 100px;
+    width: 70%;
+    margin: 0 auto;
+    h1 {
+      font-size: 2rem;
+    }
+    .tourName {
+      display: block;
+      margin: 0 auto 10px auto;
+    }
+    input {
+      border: none;
+    }
+    .tour-features-container {
+      display: flex;
+      justify-content: center;
+      // align-items: center;
+      overflow: auto;
+      .left-checkboxes {
+        width: 30%;
+        padding: 10px;
+        display: inline-block;
+        float: left;
+        text-align: right;
+        input[type=checkbox] {
+          margin-left: 20px;
+        }
+      }
+      .right-checkboxes {
+        width: 20%;
+        padding: 10px;
+        float: left;
+        input[type=checkbox] {
+          float: right;
+          margin-right: 30px;
+        }
+      }
+    }
+    .tour-description {
+      margin-top: 10px;
+      label {
+        // margin-top: 10px;
+      }
+      textarea {
+        display: block;
+        margin: 0 auto;
+      }
+    }
+    .start-end-date-container {
+      margin-top: 20px;
+    }
+    .file-select-container {
+      margin: 10px 0;
+      input[type=file] {
+        border: 1px solid red;
+        border: none;
+        outline: none;
+        text-align: center;
+        background: $gray-200;
+      }
+      Button {
+        // outline: none;
+      }
+    }
+  }
+  .tour-footer-btns {
+    .cancel-btn {
+      display: inline-block;
+    }
+    .next-btn {
+      float: right;
+      background-color: $gray-200;
+      color: white;
+      &:hover {
+        background-color: $gray-400;
+      }
+    }
+  }
+}
