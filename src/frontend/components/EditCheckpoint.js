@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import { tourDb, checkDb } from "../services/db";
 import { deleteCheckpoint, selectTour, updateTour, updateEditCheckpoint } from '../actions';
+import { deleteDBCheckpoint } from '../services/checkpoints';
 
 class CheckpointEdit extends React.Component{
   constructor() {
@@ -23,17 +24,7 @@ class CheckpointEdit extends React.Component{
 
   deleteCheckpoint(e) {
     e.preventDefault();
-    var deletedCheckpointArray = this.props.tour.currentTour.checkpoints.filter(checkpoint => checkpoint.checkpoint !== this.props.checkpoint.id)
-    tourDb.doc(this.props.tour.currentTourId).update({
-      checkpoints: deletedCheckpointArray
-    })
-    checkDb.doc(this.props.checkpoint.id).delete()
-    .then(() => {
-      this.props.deleteCheckpoint(this.props.checkpoint.id)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+      deleteDBCheckpoint(this);
   }
 
   render(){

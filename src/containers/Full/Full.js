@@ -9,20 +9,18 @@ import Breadcrumb from '../../components/Breadcrumb/';
 import Aside from '../../components/Aside/';
 import Footer from '../../components/Footer/';
 import Dashboard from '../../views/Dashboard/';
-import Charts from '../../views/Charts/';
-import Widgets from '../../views/Widgets/';
 import Profile from '../../frontend/views/Profile';
 import Explore from '../../frontend/components/explore';
 import myProfile from '../../frontend/components/myProfile';
 import UserRegister from '../../components/UserRegister/UserRegister';
 import AboutMe from '../../components/AboutMe/AboutMe';
-import firebase from '../../fire';
-
 
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { signIn } from '../../frontend/actions';
+import { checkLoggedIn } from "../../frontend/services/users";
+
 
 
 
@@ -42,18 +40,7 @@ class Full extends Component {
   }
 
     componentWillMount(){
-        var self = this;
-        if(this.props.isSignedIn || localStorage.signedIn) {
-            if(!this.props.isSignedIn) {
-                firebase.auth().onAuthStateChanged((user)=> {
-                    var action = {user}
-                    self.props.signIn(action)
-                    this.setState({
-                        user: user
-                    });
-                })
-            }
-        }
+        checkLoggedIn(this);
     }
 
 
@@ -76,7 +63,6 @@ class Full extends Component {
                                     <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                                     <Route path="/explore" name="explore" component={Explore}/>
                                     <Route path="/myProfile" name="myProfile" component={myProfile}/>
-
                                     <Route path="/explore" name="explore" component={Explore}/>
                                     <Route path="/createTour" name="Create Tour" component={CreateTour} />
                                     <Route exact path="/tour/:tour" name="Tour" component={TourDetailComponent} />

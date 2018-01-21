@@ -1,37 +1,6 @@
 
-
-// function createUser(firebase){
-//   //Finding Current User
-//   let user = firebase.auth().currentUser;
-//   //Getting all users
-//   let userExists = firebase.database().ref()
-//           .child('users');
-
-//   //Looping through all users here
-//   userExists.once('value', snap =>{
-//     console.log(snap.val())
-//   //retrieving all of the uid's of users
-//     let uid = Object.keys(snap.val());
-//     //Does the list of users in firebase have the currect user logged in?
-//     let currentUserCreated = uid.indexOf(user.uid)
-//     if (currentUserCreated === -1){
-//       firebase.database().ref().child('users')
-//           .child(firebase.auth().currentUser.uid)
-//           .set({
-//         name: user.displayName,
-//         email: user.email
-//       })
-//     }
-//   });
-//   console.log('we did it!')
-// }
-
-
-// module.exports={
-//   createUser: createUser
-// }
-
 import { userDb } from "./db";
+import firebase from "../../fire";
 
 export function createUser(result){
   return new Promise((resolve, reject) => {
@@ -79,3 +48,91 @@ export function createUserWithEmail(result, username){
     })
   });
 }
+
+
+export function createUserWithEmailAndPassword(state){
+
+    let self = state;
+    const email = state.state.email;
+    const pass = state.state.pass;
+    const username = state.state.fullName;
+    firebase.auth().createUserWithEmailAndPassword(email, pass).then(function(user) {
+        //console.log(user);
+        createUserWithEmail(user, username).then((resp) => {
+            self.props.signIn(user);
+            localStorage.userName = username;
+            localStorage.uid = user.uid;
+            localStorage.signedIn = true;
+            self.setState({
+                loggedIn: true
+            });
+            console.log(self.state);
+        }).catch((err) => {
+            console.log(err);
+        })
+    }).then(function(){
+        var user = firebase.auth().currentUser;
+        var actionCodeSettings = {
+            url: 'http://localhost:8080/completeprof/' + firebase.auth().currentUser.iud
+        };
+
+        user.sendEmailVerification().then(function() {
+            //email sent
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var emailE = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+        // ...
+        console.log(errorCode + ' ' + errorMessage + ' ' + emailE + ' ' + credential);
+    });
+
+}
+
+export function signInWithPopup(state){
+    var self = state;
+    firebase.auth().signInWithPopup(provider).then(function(user) {
+
+        createUser(user).then((resp) => {
+            self.props.signIn(user);
+            localStorage.userName = user.displayName;
+            localStorage.uid = user.user.uid;
+            localStorage.signedIn = true;
+            self.setState({
+                loggedIn: true
+            });
+            console.log(self.state);
+        }).catch((err) => {
+            console.log(err);
+        })
+    }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+        // ...
+    });
+}
+
+export function checkLoggedIn(state){
+    var self = state;
+    if(state.props.signedIn || localStorage.signedIn) {
+        if(!state.props.signedIn) {
+            firebase.auth().onAuthStateChanged((user)=> {
+                self.props.signIn(user)
+                console.log(user);
+            })
+        }
+    }
+}
+
+

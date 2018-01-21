@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 
 //SERVICE CALLS
 import firebase from '../../../../fire';
-import { createUser, createUserWithEmail } from "../../../services/users";
+import { createUserWithEmailAndPassword, signInWithPopup, checkLoggedIn } from "../../../services/users";
 
 //Redux dependencies and actions
 import { connect } from 'react-redux';
@@ -32,15 +32,7 @@ class Login extends Component {
 
   componentWillMount(){
       // This will check if the user has been signed in previously due to re-routing by manually changing the url.
-    var self = this;
-      if(this.props.signedIn || localStorage.signedIn) {
-        if(!this.props.signedIn) {
-            firebase.auth().onAuthStateChanged((user)=> {
-                self.props.signIn(user)
-                console.log(user);
-            })
-        }
-      }
+      checkLoggedIn(this);
   }
 
   handleOnChange(ev){
@@ -55,75 +47,11 @@ class Login extends Component {
   }
 
   handleOnSubmit(){
-      let self = this;
-      const email = this.state.email;
-      const pass = this.state.pass;
-      const username = this.state.fullName;
-
-      firebase.auth().createUserWithEmailAndPassword(email, pass).then(function(user) {
-          //console.log(user);
-           createUserWithEmail(user, username).then((resp) => {
-               self.props.signIn(user);
-               localStorage.userName = username;
-               localStorage.uid = user.uid;
-               localStorage.signedIn = true;
-               self.setState({
-                   loggedIn: true
-               });
-                  console.log(self.state);
-              }).catch((err) => {
-                  console.log(err);
-              })
-      }).then(function(){
-          var user = firebase.auth().currentUser;
-          var actionCodeSettings = {
-              url: 'http://localhost:8080/completeprof/' + firebase.auth().currentUser.iud
-          };
-
-          user.sendEmailVerification().then(function() {
-              //email sent
-            }).catch(function(error) {
-              console.log(error);
-            });
-      }).catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // The email of the user's account used.
-          var emailE = error.email;
-          // The firebase.auth.AuthCredential type that was used.
-          var credential = error.credential;
-          // ...
-          console.log(errorCode + ' ' + errorMessage + ' ' + emailE + ' ' + credential);
-      });
+      createUserWithEmailAndPassword(this);
   }
 
     login(){
-        var self = this;
-        firebase.auth().signInWithPopup(provider).then(function(user) {
-
-         createUser(user).then((resp) => {
-             self.props.signIn(user);
-             localStorage.userName = user.displayName;
-             localStorage.uid = user.user.uid;
-             localStorage.signedIn = true;
-             self.setState({
-                 loggedIn: true
-             });
-                console.log(self.state);
-            }).catch((err) => {
-                console.log(err);
-            })
-        }).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // The email of the user's account used.
-            var email = error.email;
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
-            // ...
-        });
+        signInWithPopup(this);
     }
 
   render() {
