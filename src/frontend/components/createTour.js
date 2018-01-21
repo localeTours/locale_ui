@@ -7,6 +7,9 @@ import { auth, tourDb, checkDb, storageRef, userDb } from "../services/db";
 import firebase from '../../fire';
 import { signIn } from '../actions';
 
+// import { Form, Label, FormGroup, Button, Input } from 'reactstrap';
+import { Button } from 'reactstrap';
+
 
 
 class CreateTour extends React.Component {
@@ -159,7 +162,7 @@ class CreateTour extends React.Component {
     render(){
         // Tour form and Checkpoint form
         return (
-            <div>
+            <div className='create-tour-container'>
                 {
                     this.state.loading ?
                     <h3>Loading....</h3>
@@ -168,30 +171,74 @@ class CreateTour extends React.Component {
                         <Link key={i} to={"/tour/"+t.id}>{t.tour}</Link>
                     )
                 }
-                <form onSubmit={this.createTourForm}>
-                    <label htmlFor="tourName">Tour Name</label>
-                    <input onChange={this.handleChange} type="text" name="tourName" />
+                <form className='tour-form' onSubmit={this.createTourForm}>
+                  <div className='tourName'>
+                    <label htmlFor="tourName"></label>
+                    <input onChange={this.handleChange} type="text" name="tourName" placeholder='Tour Name' />
+                  </div>
 
+                  <h1>FEATURES</h1>
+                  <div className='tour-features-container'>
+                    <div className='left-checkboxes'>
+                      <div>
+                        <label htmlFor="requireCheckin">Require Check-in</label>
+                        <input type='checkbox' />
+                      </div>
+                      <div>
+                        <label htmlFor="commentSection">Comment Section</label>
+                        <input type='checkbox' />
+                      </div>
+                      <div>
+                        <label htmlFor="reactions">Reactions</label>
+                        <input type='checkbox' />
+                      </div>
+                      <div>
+                        <label htmlFor="hasToBeInOrderCheckpoints">Checkpoints in Order?</label>
+                        <input onChange={this.handleChange} type="checkbox" name="inOrder"/>
+                      </div>
+                    </div>
+
+                    <div className='right-checkboxes'>
+
+                      <div>
+                        <label htmlFor="requireCheckin">Timed</label>
+                        <input type='checkbox' />
+                      </div>
+                      <div>
+                        <label htmlFor="isPrivate">Is Private?</label>
+                        <input onChange={this.handleChange} type="checkbox" name="isPrivate"/>
+                      </div>
+                      <div>
+                        <label htmlFor="date-time">Date/Time</label>
+                        <input type='checkbox' />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className='tour-description'>
                     <label htmlFor="tourDescription">Tour Description</label>
-                    <input onChange={this.handleChange} type="text" name="tourDescription"/>
+                    <textarea onChange={this.handleChange} type="text" name="tourDescription" maxLength='5000'/>
+                  </div>
 
+                  <div className='start-end-date-container'>
                     <label htmlFor="startDate">Start Date</label>
                     <input onChange={this.handleChange} type="date" name="startDate"/>
 
                     <label htmlFor="endDate">End Date</label>
                     <input onChange={this.handleChange} type="date" name="endDate"/>
+                  </div>
 
-                    <label htmlFor="isPrivate">Is Private?</label>
-                    <input onChange={this.handleChange} type="checkbox" name="isPrivate"/>
+                    {/* <label htmlFor="isPrivate">Is Private?</label>
+                    <input onChange={this.handleChange} type="checkbox" name="isPrivate"/> */}
 
-                    <label htmlFor="hasToBeInOrderCheckpoints">Checkpoints in Order?</label>
-                    <input onChange={this.handleChange} type="checkbox" name="inOrder"/>
+                    {/* <label htmlFor="hasToBeInOrderCheckpoints">Checkpoints in Order?</label>
+                    <input onChange={this.handleChange} type="checkbox" name="inOrder"/> */}
 
 
-                    Choose file
-                    <form >
+                    <div className='file-select-container'>
+                        {/* <label className=''>Choose file</label> */}
                         <input type="file" onChange={this._handleImageChange.bind(this)} />
-                    </form>
+                    </div>
 
 
                     <label>Checkpoint(s):</label>
@@ -212,6 +259,10 @@ class CreateTour extends React.Component {
 
                     <input type="submit" value="make tour" />
                 </form>
+                <div className='tour-footer-btns'>
+                  <Button className='cancel-btn'>Cancel</Button>
+                  <Button className='next-btn'>Next</Button>
+                </div>
             </div>
         )
     }
@@ -231,4 +282,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const connectedCreateTour = connect(mapStateToProps, mapDispatchToProps)(CreateTour)
-export default connectedCreateTour
+export default connectedCreateTour;

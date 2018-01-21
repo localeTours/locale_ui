@@ -15,6 +15,8 @@ import myProfile from '../../frontend/components/myProfile';
 import UserRegister from '../../components/UserRegister/UserRegister';
 import AboutMe from '../../components/AboutMe/AboutMe';
 
+
+
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -102,4 +104,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Full));
-
