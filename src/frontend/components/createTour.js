@@ -4,6 +4,10 @@ import { bindActionCreators } from 'redux';
 import { Link } from "react-router-dom";
 
 import { auth, tourDb, checkDb, storageRef, userDb } from "../services/db";
+import { createNewTour, getAllUserTours } from "../services/tours";
+import { checkLoggedIn } from "../services/users";
+
+
 import firebase from '../../fire';
 import { signIn } from '../actions';
 
@@ -25,10 +29,10 @@ class CreateTour extends React.Component {
             startDate: "",
             endDate: "",
             isPrivate: null,
-            inOrder: null
+            inOrder: null,
+            tours: []
         }
 
-        this.tours = [];
 
         this.makeCheckpoint = this.makeCheckpoint.bind(this);
         this.createTourForm = this.createTourForm.bind(this);
@@ -36,85 +40,36 @@ class CreateTour extends React.Component {
     }
 
     componentWillMount(){
-        if(this.tours.length < 1){
+        var self = this;
+        if(this.state.tours.length < 1){
             this.setState({
                 loading: true
             });
-            var self = this;
-              if(this.props.signedIn || localStorage.signedIn) {
-                if(!this.props.signedIn) {
-                    firebase.auth().onAuthStateChanged((user)=> {
-                        self.props.signIn(user)
-                        self.getTours(user);
-                    })
-                }
-              }
+
+            checkLoggedIn(this).then(function(response, resolve){
+
+                getAllUserTours(response).then( (resp, res) => {
+                    self.setState({
+                        tours: resp
+                    });
+
+                });
+                self.setState({
+                    loading: false
+                });
+
+            })
 
         }
     }
 
 
-    getTours(user){
-        tourDb.where("creator", "==", user.uid).get().then((resp) => {
-            resp.forEach((tour) => {
-                var item = {
-                    id: tour.id,
-                    tour: tour.data().name
-                };
-                this.tours.push(item);
-            });
 
-            this.setState({
-                loading: false
-            });
-        }).catch((err) => {
-            console.log(err);
-        });
-    }
+
 
     createTourForm(e){
         e.preventDefault();
-        var startDate = new Date(this.state.startDate).toLocaleDateString();
-        var endDate = new Date(this.state.endDate).toLocaleDateString();
-        var currentState = this.state;
-        var passedProps = this.props;
-        var checkIdArr = [];
-        //Adding Tours to DB
-        tourDb.add({
-            name: currentState.tourName,
-            description: currentState.tourDescription,
-            startDate: startDate,
-            endDate: endDate,
-            isPrivate: currentState.isPrivate,
-            inOrder: currentState.inOrder,
-            creator: this.props.account.user.uid
-          }).then(function(doc){
-            var docToUp = tourDb.doc(doc.id);
-            // Adding checkpoints here. Still WIP
-            currentState.checkpoints.forEach((check, i) => {
-                checkDb.add({
-                    name: check.checkpointName,
-                    longitude: check.long,
-                    latitude: check.lat,
-                    tour: doc.id
-                }).then(function(checkDoc){
-                    checkIdArr.push({
-                        checkpoint: checkDoc.id
-                    });
-                    return docToUp.update({
-                        checkpoints: checkIdArr
-                    });
-                }).then(function(res){
-                    console.log(res);
-                }).catch(function(err){
-                    console.log(err);
-                });
-            });
-            console.log(checkIdArr);
-
-          }).catch(function(err){
-            console.log(err);
-          })
+        createNewTour(this);
     }
 
     makeCheckpoint(e){
@@ -167,7 +122,7 @@ class CreateTour extends React.Component {
                     this.state.loading ?
                     <h3>Loading....</h3>
                     :
-                    this.tours.map((t, i) =>
+                    this.state.tours.map((t, i) =>
                         <Link key={i} to={"/tour/"+t.id}>{t.tour}</Link>
                     )
                 }

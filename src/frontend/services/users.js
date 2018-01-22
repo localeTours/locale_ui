@@ -97,42 +97,48 @@ export function createUserWithEmailAndPassword(state){
 
 export function signInWithPopup(state){
     var self = state;
-    firebase.auth().signInWithPopup(provider).then(function(user) {
 
-        createUser(user).then((resp) => {
-            self.props.signIn(user);
-            localStorage.userName = user.displayName;
-            localStorage.uid = user.user.uid;
-            localStorage.signedIn = true;
-            self.setState({
-                loggedIn: true
-            });
-            console.log(self.state);
-        }).catch((err) => {
-            console.log(err);
-        })
-    }).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        // ...
+    return new Promise((resolve, reject) => {
+        firebase.auth().signInWithPopup(provider).then(function (user) {
+
+            createUser(user).then((resp) => {
+                self.props.signIn(user);
+                localStorage.userName = user.displayName;
+                localStorage.uid = user.user.uid;
+                localStorage.signedIn = true;
+                self.setState({
+                    loggedIn: true
+                });
+                console.log(self.state);
+            }).catch((err) => {
+                console.log(err);
+            })
+        }).catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+            // ...
+        });
     });
 }
 
 export function checkLoggedIn(state){
     var self = state;
-    if(state.props.signedIn || localStorage.signedIn) {
-        if(!state.props.signedIn) {
-            firebase.auth().onAuthStateChanged((user)=> {
-                self.props.signIn(user)
-                console.log(user);
-            })
+    return new Promise((resolve, reject) => {
+        if (state.props.signedIn || localStorage.signedIn) {
+            if (!state.props.signedIn) {
+                firebase.auth().onAuthStateChanged((user) => {
+                    self.props.signIn(user)
+                    console.log(user);
+                    return resolve(user)
+                })
+            }
         }
-    }
+    });
 }
 
 
