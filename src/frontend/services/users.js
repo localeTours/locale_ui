@@ -134,6 +134,7 @@ export function checkLoggedIn(state){
                 firebase.auth().onAuthStateChanged((user) => {
                     self.props.signIn(user)
                     console.log(user);
+
                     return resolve(user)
                 })
             }
