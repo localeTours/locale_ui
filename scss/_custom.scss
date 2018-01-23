@@ -21,11 +21,51 @@
 //   color: blue;
 // }
 
-.profile-banner {
-  background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmY3696qkC9kcmB4STqjUvzdsO7Wx2ZKTZXZSFot57xwKaRVUK') no-repeat center center;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  height: 500px;
+.myProfile {
+  .profile-banner {
+    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmY3696qkC9kcmB4STqjUvzdsO7Wx2ZKTZXZSFot57xwKaRVUK') no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 500px;
+  }
+  .profile-image-container {
+    // border: 1px solid red;
+    margin: 0 auto;
+    width: 40%;
+    margin-top: -120px;
+    .profile-image {
+      text-align: center;
+      margin-top: 5px;
+    }
+    .user-details {
+      border: 1px solid red;
+      .user-name {
+        text-align: center;
+      }
+      .user-location {
+        text-align: center;
+      }
+    }
+  .follow-button-container {
+      display: inline-block;
+      border: 1px solid blue
+    }
+  }
+  .profile-main-container {
+    // border: 1px solid red;
+    margin-top: 10px;
+    .about-me {
+      width: 30%;
+      border: 1px solid green;
+      float: left;
+    }
+    .tour-info {
+      width: 70%;
+      border: 1px solid blue;
+      display: inline-block;
+      float: left;
+    }
+  }
 }
