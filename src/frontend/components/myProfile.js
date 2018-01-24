@@ -47,27 +47,32 @@ class myProfile extends Component {
               "}</style>
 
         <div className='profile-banner'></div>
-        <div className='profile-image-container'>
-          <div className='profile-image'>
-            <img src='https://410j80383xfr3tqxi01piyu7-wpengine.netdna-ssl.com/wp-content/themes/greenct/assets/images/user-icon-placeholder.jpg' height='200' />
+        <div className='profile-image-btn-container'>
+          <div className='profile-info'>
+            <div>
+              <img src='https://410j80383xfr3tqxi01piyu7-wpengine.netdna-ssl.com/wp-content/themes/greenct/assets/images/user-icon-placeholder.jpg' height='200' />
+            </div>
+            <div className='user-details'>
+              <div className='user-name'>username</div>
+              <div className='user-location'>location</div>
+            </div>
           </div>
-          <div className='user-details'>
-            <div className='user-name'>username</div>
-            <div className='user-location'>location</div>
-          </div>
-          <div className='follow-button-container'>
+          <div className='follow-btn-container'>
             <Button color="success"><i className="fa fa-magic"></i>&nbsp; Follow </Button>
           </div>
-
         </div>
+
 
         <div className='profile-main-container'>
           <div className='about-me'>
             <div className="card">
               <div className="card-body">
-                <h4 className="card-title">Card title</h4>
+                <h4 className="card-title">About Me</h4>
                 <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+                  Some quick example text to build on the card title and make up the bulk of the card's content.
+                  Some quick example text to build on the card title and make up the bulk of the card's content.
+                </p>
                 <a href="#" className="card-link">Card link</a>
                 <a href="#" className="card-link">Another link</a>
               </div>
