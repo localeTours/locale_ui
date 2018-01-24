@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { tourDb, checkDb } from "../services/db";
+import { editTourAndCheckpoint } from "../services/tours";
 import { selectTour, updateTour, updateCheckpointsWithEdit } from "../actions";
 import CheckpointEdit from './EditCheckpoint'
 
@@ -33,18 +33,11 @@ class TourDetailEdit extends React.Component{
   }
 
   handleEditSubmit(e) {
-    e.preventDefault()
-    tourDb.doc(this.props.tour.currentTourId).update({
-      description: this.state.tour.editDescription,
-      name: this.state.tour.editTitle
-    })
-    this.props.checkpoints.editCheckpoints.forEach((checkpoint) => {
-      checkDb.doc(checkpoint.id).update({
-        latitude: checkpoint.lat,
-        longitude: checkpoint.long,
-        name: checkpoint.name
-      })
-    })
+    e.preventDefault();
+    //making service call to edit tour and checkpoint
+      editTourAndCheckpoint(this);
+
+      // updating redux
     this.props.updateTour(this.state.tour);
     this.props.updateCheckpointsWithEdit();
     this.props.updateEditVisible();
