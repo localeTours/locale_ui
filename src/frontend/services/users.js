@@ -1,6 +1,7 @@
 
 import { userDb } from "./db";
 import firebase from "../../fire";
+var provider = new firebase.auth.GoogleAuthProvider();
 
 export function createUser(result){
   return new Promise((resolve, reject) => {
@@ -141,5 +142,3 @@ export function checkLoggedIn(state){
         }
     });
 }
-
-
