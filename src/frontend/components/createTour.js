@@ -20,12 +20,13 @@ class CreateTour extends React.Component {
         this.state = {
             loading: false,
             tourName: "",
-            checkpoints: [],
+            // checkpoints: [],
             tourDescription: "",
             startDate: "",
             endDate: "",
             isPrivate: null,
-            inOrder: null
+            inOrder: null,
+            tourId: ""
         }
 
         this.tours = [];
