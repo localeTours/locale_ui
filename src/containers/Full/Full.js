@@ -33,6 +33,7 @@ import { signIn } from '../../frontend/actions';
 // Icons
 
 import CreateTour from "../../frontend/components/createTour";
+import CreateTourStepTwo  from "../../frontend/components/createTourStepTwo";
 import TourDetailComponent from "../../frontend/components/tourDetail";
 
 class Full extends Component {
@@ -81,6 +82,7 @@ class Full extends Component {
 
                                     <Route path="/explore" name="explore" component={Explore}/>
                                     <Route path="/createTour" name="Create Tour" component={CreateTour} />
+                                    <Route path="/createTourStepTwo" name="Create Tour Step Two" component={CreateTourStepTwo} />
                                     <Route exact path="/tour/:tour" name="Tour" component={TourDetailComponent} />
                                     <Redirect from="/" to="/dashboard"/>
                                 </Switch>

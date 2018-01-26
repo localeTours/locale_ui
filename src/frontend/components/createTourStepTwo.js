@@ -12,19 +12,30 @@ import { signIn } from '../actions';
 
 
 
-class CreateTour extends React.Component {
+class CreateTourStepTwo extends React.Component {
 
     constructor(){
         super();
 
         this.state = {
-            checkpoints: [],
-
-
+            checkpoints: []
         }
 
-        this.tours = [];
+        // this.tours = [];
 
-        this.makeCheckpoint = this.makeCheckpoint.bind(this);
-        // this.handleChange = this.handleChange.bind(this);
+        // this.makeCheckpoint = this.makeCheckpoint.bind(this);
     }
+
+  render(){
+    console.log(this.props)
+    let tourId = this.props.tourId
+    return (
+      <div>
+        <p>this is step two</p>
+        {/* <p>{tourId}</p> */}
+      </div>
+    );
+  }
+}
+
+export default CreateTourStepTwo;

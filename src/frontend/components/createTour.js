@@ -10,6 +10,7 @@ import { signIn } from '../actions';
 // import { Form, Label, FormGroup, Button, Input } from 'reactstrap';
 import { Button } from 'reactstrap';
 
+import CreateTourStepTwo from './createTourStepTwo';
 
 
 class CreateTour extends React.Component {
@@ -20,7 +21,6 @@ class CreateTour extends React.Component {
         this.state = {
             loading: false,
             tourName: "",
-            // checkpoints: [],
             tourDescription: "",
             startDate: "",
             endDate: "",
@@ -31,7 +31,6 @@ class CreateTour extends React.Component {
 
         this.tours = [];
 
-        this.makeCheckpoint = this.makeCheckpoint.bind(this);
         this.createTourForm = this.createTourForm.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
@@ -79,7 +78,7 @@ class CreateTour extends React.Component {
         var endDate = new Date(this.state.endDate).toLocaleDateString();
         var currentState = this.state;
         var passedProps = this.props;
-        var checkIdArr = [];
+        // var checkIdArr = [];
         //Adding Tours to DB
         tourDb.add({
             name: currentState.tourName,
@@ -89,52 +88,55 @@ class CreateTour extends React.Component {
             isPrivate: currentState.isPrivate,
             inOrder: currentState.inOrder,
             creator: this.props.account.user.uid
-          }).then(function(doc){
+          }).then(doc =>{
+            this.setState({
+              newId: doc.id
+            })
             var docToUp = tourDb.doc(doc.id);
-            // Adding checkpoints here. Still WIP
-            currentState.checkpoints.forEach((check, i) => {
-                checkDb.add({
-                    name: check.checkpointName,
-                    longitude: check.long,
-                    latitude: check.lat,
-                    tour: doc.id
-                }).then(function(checkDoc){
-                    checkIdArr.push({
-                        checkpoint: checkDoc.id
-                    });
-                    return docToUp.update({
-                        checkpoints: checkIdArr
-                    });
-                }).then(function(res){
-                    console.log(res);
-                }).catch(function(err){
-                    console.log(err);
-                });
-            });
-            console.log(checkIdArr);
+          //   // Adding checkpoints here. Still WIP
+          //   currentState.checkpoints.forEach((check, i) => {
+          //       checkDb.add({
+          //           name: check.checkpointName,
+          //           longitude: check.long,
+          //           latitude: check.lat,
+          //           tour: doc.id
+          //       }).then(function(checkDoc){
+          //           checkIdArr.push({
+          //               checkpoint: checkDoc.id
+          //           });
+          //           return docToUp.update({
+          //               checkpoints: checkIdArr
+          //           });
+          //       }).then(function(res){
+          //           console.log(res);
+          //       }).catch(function(err){
+          //           console.log(err);
+          //       });
+          //   });
+          //   console.log(checkIdArr);
 
           }).catch(function(err){
             console.log(err);
           })
     }
 
-    makeCheckpoint(e){
-        //Makes the checkpoint then adds to checkpoint state
-        e.preventDefault();
-
-        var newArr = this.state.checkpoints.slice();
-        var data = {
-            checkpointName: this.refs.checkpointName.value,
-            lat: this.refs.lat.value,
-            long: this.refs.long.value
-        };
-        newArr.push(data);
-
-        this.setState({
-            checkpoints: newArr
-        });
-
-    }
+    // makeCheckpoint(e){
+    //     //Makes the checkpoint then adds to checkpoint state
+    //     e.preventDefault();
+    //
+    //     var newArr = this.state.checkpoints.slice();
+    //     var data = {
+    //         checkpointName: this.refs.checkpointName.value,
+    //         lat: this.refs.lat.value,
+    //         long: this.refs.long.value
+    //     };
+    //     newArr.push(data);
+    //
+    //     this.setState({
+    //         checkpoints: newArr
+    //     });
+    //
+    // }
 
     _handleImageChange(e){
 
@@ -160,8 +162,10 @@ class CreateTour extends React.Component {
         });
     }
 
-    render(){
+    render(){console.log(this.state)
         // Tour form and Checkpoint form
+        let tourId = this.state.tourId;
+
         return (
             <div className='create-tour-container'>
                 {
@@ -242,7 +246,7 @@ class CreateTour extends React.Component {
                     </div>
 
 
-                    <label>Checkpoint(s):</label>
+                    {/* <label>Checkpoint(s):</label>
                     <input type="text" ref="checkpointName" />
                     <input type="number" ref="lat" />
                     <input type="number" ref="long" />
@@ -256,14 +260,28 @@ class CreateTour extends React.Component {
                             <li>No checkpoints</li>
                         }
                     </ul>
-                    <button onClick={this.makeCheckpoint}>Make Checkpoint</button>
+                    <button onClick={this.makeCheckpoint}>Make Checkpoint</button>*/}
 
                     <input type="submit" value="make tour" />
                 </form>
                 <div className='tour-footer-btns'>
                   <Button className='cancel-btn'>Cancel</Button>
-                  <Button className='next-btn'>Next</Button>
+                  <Link
+                    to={{
+                      pathname:'/createTourStepTwo',
+                      state : this.state.newId
+                    }}
+                    >
+
+                  <Button className='next-btn'>
+                      Next
+
+                  </Button>
+
+                </Link>
                 </div>
+                {tourId}
+
             </div>
         )
     }
