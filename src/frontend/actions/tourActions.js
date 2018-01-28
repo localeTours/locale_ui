@@ -39,6 +39,10 @@ export const selectTourAndCheckpoints = (tourId) => {
     tourDb.doc(tourId).get().then((resp) => {
         var tour = resp.data();
         var checkpoints = []
+        dispatch({
+          type: 'SELECT_TOUR',
+          payload: {currentTour: tour, currentTourId: resp.id}
+        })
         tour.checkpoints.forEach(c => {
             checkDb.doc(c.checkpoint).get().then((resp) => {
               var checkpnt = resp.data();
@@ -63,6 +67,7 @@ export const selectTourAndCheckpoints = (tourId) => {
 }
 
 export const selectTour = (tourAndTourId) => {
+  debugger;
   return  {
     type: 'SELECT_TOUR',
     payload: tourAndTourId

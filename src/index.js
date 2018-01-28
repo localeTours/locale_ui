@@ -37,10 +37,6 @@ import {
 
 let store = createStore(reducers, {}, composeWithDevTools(applyMiddleware(thunk, rMiddleware)));
 
-
-
-
-
 ReactDOM.render((
     <Provider store={store}>
       <HashRouter>

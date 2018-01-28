@@ -1,7 +1,15 @@
-export const manageTour = (state = { currentTourId: "", currentTour: {}, createTour: {isPrivate: false, inOrder: false} }, action) => {
+var createTour = {
+  tourName: "",
+  tourDescription: "",
+  startDate: Date.now(),
+  endDate: Date.now(),
+  isPrivate: false,
+  inOrder: false
+}
+export const manageTour = (state = { currentTourId: "", currentTour: {}, createTour: createTour }, action) => {
   switch (action.type) {
     case 'SELECT_TOUR':
-      return Object.assign({}, state, action.payload)
+      return Object.assign({}, state, {currentTour: action.payload.currentTour, currentTourId: action.payload.currentTourId})
     case 'UPDATE_TOUR':
       var updatedTour = Object.assign({}, state.currentTour, {name: action.payload.editTitle, description: action.payload.editDescription})
       return Object.assign({}, state, {currentTour: updatedTour})

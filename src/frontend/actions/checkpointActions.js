@@ -33,3 +33,17 @@ export const deleteCheckpoint = (id) => {
     payload: id
   }
 }
+
+export const updateCreateCheckpoints = (checkpoint) => {
+  return {
+    type: 'UPDATE_CREATE_CHECKPOINT',
+    payload: checkpoint
+  }
+}
+
+export const addCreateCheckpoint = (checkpoint) => {
+  return {
+    type: "ADD_CREATE_CHECKPOINT",
+    payload: checkpoint
+  }
+}

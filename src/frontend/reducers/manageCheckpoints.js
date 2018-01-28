@@ -1,4 +1,16 @@
-export const manageCheckpoints = (state = {checkpoints: [], editCheckpoints: []}, action) => {
+var emptyCheckpoint = {
+  latitude: 0,
+  longitude: 0,
+  name: "",
+  position: -1
+}
+
+var createCheckpoints = []
+for(var i = 1; i <= 10; i++) {
+  createCheckpoints.push(emptyCheckpoint)
+}
+
+export const manageCheckpoints = (state = {checkpoints: [], editCheckpoints: [], createCheckpoints: createCheckpoints}, action) => {
   switch (action.type) {
     case 'SELECT_CHECKPOINTS':
       return {checkpoints: action.payload, editCheckpoints: action.payload}
@@ -26,6 +38,13 @@ export const manageCheckpoints = (state = {checkpoints: [], editCheckpoints: []}
         }
       })
       return {checkpoints: deletedArray, editCheckpoints: deletedArray}
+    case 'CREATE_CHECKPOINT':
+      var updatedCreateChkpnts = [...state.createCheckpoints, action.payload]
+      return Object.assign({}, state, { createCheckpoints: updatedCreateChkpnts })
+    case 'ADD_CREATE_CHECKPOINT':
+      return Object.assign({}, state, { createCheckpoints: [...state.createCheckpoints, emptyCheckpoint] })
+    case 'UPDATE_CREATE_CHECKPOINT':
+
     default:
       return state;
   }

@@ -87,7 +87,9 @@ class CreateTour extends React.Component {
       if(this.props.account.tours.length > 0){
         return (
           this.props.account.tours.map((t, i) =>
-              <Link key={i} to={"/tour/"+t.id}>{t.tour}</Link>
+            <li key={i}>
+              <Link to={"/tour/"+t.id}>{t.tour}</Link>
+            </li>
           )
         )
       } else {
@@ -121,25 +123,42 @@ class CreateTour extends React.Component {
         // Tour form and Checkpoint form
         return (
             <div>
-                {this.showtours()}
                 <form onSubmit={this.createTourForm}>
                     <label htmlFor="tourName">Tour Name</label>
-                    <input onChange={this.handleChange} type="text" name="tourName" />
+                    <input onChange={this.handleChange}
+                           type="text"
+                           value={this.props.tour.createTour.tourName}
+                           name="tourName" />
 
                     <label htmlFor="tourDescription">Tour Description</label>
-                    <input onChange={this.handleChange} type="text" name="tourDescription"/>
+                    <input onChange={this.handleChange}
+                           type="text"
+                           value={this.props.tour.createTour.tourDescription}
+                           name="tourDescription"/>
 
                     <label htmlFor="startDate">Start Date</label>
-                    <input onChange={this.handleChange} type="date" name="startDate"/>
+                    <input onChange={this.handleChange}
+                           type="date"
+                           value={this.props.tour.createTour.startDate}
+                           name="startDate"/>
 
                     <label htmlFor="endDate">End Date</label>
-                    <input onChange={this.handleChange} type="date" name="endDate"/>
+                    <input onChange={this.handleChange}
+                           type="date"
+                           value={this.props.tour.createTour.endDate}
+                           name="endDate"/>
 
                     <label htmlFor="isPrivate">Is Private?</label>
-                    <input onChange={this.handleChange} type="checkbox" name="isPrivate"/>
+                    <input onChange={this.handleChange}
+                           type="checkbox"
+                           value={this.props.tour.createTour.isPrivate}
+                           name="isPrivate"/>
 
                     <label htmlFor="hasToBeInOrderCheckpoints">Checkpoints in Order?</label>
-                    <input onChange={this.handleChange} type="checkbox" name="inOrder"/>
+                    <input onChange={this.handleChange}
+                           type="checkbox"
+                           value={this.props.tour.createTour.inOrder}
+                           name="inOrder"/>
 
 
                     Choose file
@@ -156,9 +175,12 @@ class CreateTour extends React.Component {
                         {this.showCheckpoints()}
                     </ul>
                     <button onClick={this.makeCheckpoint}>Make Checkpoint</button>
-
+                    <Link to="/tour/checkpoints">Make Checkpoints</Link>
                     <input type="submit" value="make tour" />
                 </form>
+                <ul>
+                  {this.showtours()}
+                </ul>
             </div>
         )
     }

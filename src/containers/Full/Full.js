@@ -31,6 +31,8 @@ import { signIn } from '../../frontend/actions';
 // Icons
 
 import CreateTour from "../../frontend/components/createTour";
+import CreateCheckpointList from '../../frontend/components/createCheckpointList';
+import CreateCheckpoint from '../../frontend/components/createCheckpoint';
 import TourDetailComponent from "../../frontend/components/tourDetail";
 
 class Full extends Component {
@@ -78,6 +80,8 @@ class Full extends Component {
 
                                     <Route path="/explore" name="explore" component={Explore}/>
                                     <Route path="/createTour" name="Create Tour" component={CreateTour} />
+                                    <Route exact path="/tour/checkpoints" name="Create Route" component={CreateCheckpointList} />
+                                    <Route exact path="/tour/checkpoints/create/:index" name="Create Checkpoint" component={CreateCheckpoint} />
                                     <Route exact path="/tour/:tour" name="Tour" component={TourDetailComponent} />
                                     <Redirect from="/" to="/dashboard"/>
                                 </Switch>
