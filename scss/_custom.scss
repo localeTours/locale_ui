@@ -20,7 +20,7 @@
 //myProfile.js component
 .myProfile {
   .profile-banner {
-    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmY3696qkC9kcmB4STqjUvzdsO7Wx2ZKTZXZSFot57xwKaRVUK') no-repeat center center;
+    background: url('https://images.unsplash.com/photo-1494806465803-34e97e0ec1c0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=372db1e34dfe54d8477df24fb85bc009&auto=format&fit=crop&w=1047&q=80') no-repeat center center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -35,28 +35,29 @@
     .profile-info {
       text-align: center;
       margin-top: 5px;
-      float: left;
+      // float: left;
       img {
         border-radius: 50%;
       }
       .user-details {
-        margin: 10px;
+        // margin: 10px;
         .user-name {
-          text-align: center;
+          // text-align: center;
         }
         .user-location {
-          text-align: center;
+          // text-align: center;
         }
       }
     }
-    .follow-btn-container {
-        float: left;
-        position: relative;
-        top: 7rem;
-        left: 5rem;
-      }
-  }
 
+  }
+  .follow-btn-container {
+      // float: left;
+      // position: relative;
+      // top: 7rem;
+      // left: 5rem;
+      display: inline-block;
+    }
   .profile-main-container {
     margin-top: 50px;
     display: grid;
@@ -76,6 +77,18 @@
     .tour-info {
       // display: inline-block;
       // float: left;
+      .card {
+        margin: 0;
+        .col {
+          ul {
+            li {
+              a {
+                border-radius: 6px;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -50,7 +50,7 @@ class myProfile extends Component {
         <div className='profile-image-btn-container'>
           <div className='profile-info'>
             <div>
-              <img src='https://410j80383xfr3tqxi01piyu7-wpengine.netdna-ssl.com/wp-content/themes/greenct/assets/images/user-icon-placeholder.jpg' height='200' />
+              <img src='https://s3.amazonaws.com/uifaces/faces/twitter/adellecharles/128.jpg' alt='' height='200' />
             </div>
             <div className='user-details'>
               <div className='user-name'>username</div>
@@ -80,6 +80,7 @@ class myProfile extends Component {
           </div>
 
           <div className='tour-info'>
+            <div className="card">
             <Row>
             <Col>
                   <Nav tabs>
@@ -510,6 +511,7 @@ class myProfile extends Component {
                   </TabContent>
                 </Col>
                 </Row>
+              </div>
           </div>
         </div>
 
