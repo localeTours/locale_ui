@@ -6,6 +6,10 @@ import { storageRef } from "../services/db";
 import { createNewTour, getAllUserTours } from "../services/tours";
 import { checkLoggedIn } from "../services/users";
 import StepOne from './createTourWizard/stepOne';
+import StepTwo from './createTourWizard/stepTwo';
+import StepThree from './createTourWizard/stepThree';
+
+
 
 
 
@@ -95,6 +99,25 @@ class CreateTour extends React.Component {
         });
     }
 
+    handleNextStep(){
+        if (this.state.number < 3 ){
+            this.setState({
+                number: this.state.number + 1
+            });
+        }
+
+    }
+
+    handleBackButton(){
+        console.log(this.state.number)
+        if (this.state.number > 1){
+            this.setState({
+                number: this.state.number - 1
+            })
+        }
+    }
+
+
 
 
     render() {
@@ -105,25 +128,20 @@ class CreateTour extends React.Component {
         //TODO: Add Logic for next and back buttons to update this.state.number
         //TODO: Make sure that functions which are now being used in StepOne.js are functional.
 
-        let displayStep = null;
-      if (this.state.number === 1){
-          displayStep = <StepOne _handleImageChange={ this._handleImageChange.bind(this)}/>;
-      } else if (this.state.number === 2){
-          displayStep = <StepTwo/>;
-      }else if (this.state.number === 3){
-          displayStep = <StepThree/>;
-      }
 
+      let step = [<StepOne/>,<StepTwo/>, <StepThree/>];
+      let stepHeader = <h1>Step {this.state.number } </h1>
+      let displayStep = step[this.state.number -1 ];
 
 
         return (
 
             <div className='create-tour-container'>
-
-                   { displayStep }
+                { stepHeader }
+                { displayStep }
                 <div className='tour-footer-btns'>
-                    <Button className='cancel-btn'>Cancel</Button>
-                    <Button className='next-btn'>Next</Button>
+                    <Button className='cancel-btn' onClick={this.handleBackButton.bind(this)}>Cancel</Button>
+                    <Button className='next-btn' onClick={this.handleNextStep.bind(this)} >Next</Button>
                 </div>
             </div>
         )
