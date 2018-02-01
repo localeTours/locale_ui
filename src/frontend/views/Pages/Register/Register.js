@@ -1,52 +1,130 @@
 import React, {Component} from 'react';
-import {Container, Row, Col, Card, CardBody, CardFooter, Button, Input, InputGroup, InputGroupAddon} from 'reactstrap';
+import {Container, Row, Col, CardGroup, Card, CardBody, Button, Input, InputGroup, InputGroupAddon,
+Form, FormGroup, Label, FormText} from 'reactstrap';
+import { Redirect } from 'react-router-dom';
+
+//SERVICE CALLS
+import firebase from '../../../../fire';
+import { checkLoggedIn } from "../../../services/users";
+
+//Redux dependencies and actions
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { bindActionCreators } from 'redux';
+import { signIn } from '../../../actions/index';
+
+//Google Auth
+var provider = new firebase.auth.GoogleAuthProvider();
 
 class Register extends Component {
+  constructor(){
+    super();
+    this.state = {
+      loggedIn:false,
+      email: '',
+      pass: '',
+      fullName: '',
+      toLog: false
+    }
+
+    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleOnSubmit = this.handleOnSubmit.bind(this);
+  }
+
+  componentWillMount(){
+      // This will check if the user has been signed in previously due to re-routing by manually changing the url.
+      checkLoggedIn(this);
+  }
+
+  handleOnChange(ev){
+      ev.preventDefault();
+      const target = ev.target;
+      const value = target.value;
+      const name = target.name;
+
+      this.setState({
+          [name]: value
+      })
+  }
+
+  handleOnSubmit(){
+      let self = this;
+      const email = this.state.email;
+      const pass = this.state.pass;
+
+      firebase.auth().signInWithEmailAndPassword(email, pass).then(function(){
+          self.setState({
+              loggedIn: true
+          });
+      }).catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // ...
+        });
+  }
+
+    login(){
+        signInWithPopup(this);
+    }
+
   render() {
+     var signedIn = localStorage.signedIn === 'true' ? true : false;
+      var userProfile = '/user/' + localStorage.uid;
+      // let completeProf = '/completeprof/' + localStorage.uid;
+
+      let stylishCard = {
+          width: '50%'
+      }
     return (
-      <div className="app flex-row align-items-center">
-        <Container>
-          <Row className="justify-content-center">
-            <Col md="6">
-              <Card className="mx-4">
-                <CardBody className="p-4">
-                  <h1>Register</h1>
-                  <p className="text-muted">Create your account</p>
-                  <InputGroup className="mb-3">
-                    <InputGroupAddon><i className="icon-user"></i></InputGroupAddon>
-                    <Input type="text" placeholder="Username"/>
-                  </InputGroup>
-                  <InputGroup className="mb-3">
-                    <InputGroupAddon>@</InputGroupAddon>
-                    <Input type="text" placeholder="Email"/>
-                  </InputGroup>
-                  <InputGroup className="mb-3">
-                    <InputGroupAddon><i className="icon-lock"></i></InputGroupAddon>
-                    <Input type="password" placeholder="Password"/>
-                  </InputGroup>
-                  <InputGroup className="mb-4">
-                    <InputGroupAddon><i className="icon-lock"></i></InputGroupAddon>
-                    <Input type="password" placeholder="Repeat password"/>
-                  </InputGroup>
-                  <Button color="success" block>Create Account</Button>
-                </CardBody>
-                <CardFooter className="p-4">
-                  <Row>
-                    <Col xs="12" sm="6">
-                      <Button className="btn-facebook" block><span>facebook</span></Button>
+        this.state.loggedIn || signedIn ?
+            <Redirect to={userProfile} />
+            :
+            <div className="app flex-row align-items-center">
+              <Container style={ stylishCard }>
+                <Row className="justify-content-center">
+                    <Col xs="12">
+                        <CardGroup>
+                            <Card  className="text-black bg-secondary py-5 d-md-down-none p-4" >
+                                <CardBody className="text-center">
+                                  <div>
+                                      <h2>Log-In</h2>
+                                      <Form>
+                                          <FormGroup>
+                                            <Label>Email</Label>
+                                            <Input type="email" name="email" placeholder="email@mail.com" onChange={ this.handleOnChange } />
+                                          </FormGroup>
+                                          <FormGroup>
+                                            <Label>Password</Label>
+                                            <Input type="password" name="pass" placeholder="password" onChange={ this.handleOnChange } />
+                                          </FormGroup>
+                                          <Button onClick={ this.handleOnSubmit } className="btn-dark">Submit</Button>
+                                      </Form><br/>
+                                  <h2>Continue with Google</h2>
+                                      <Button className="btn-google-plus" block onClick={this.login.bind(this)}><span>Google</span></Button>
+                                  </div>
+                                </CardBody>
+                            </Card>
+                        </CardGroup>
                     </Col>
-                    <Col xs="12" sm="6">
-                      <Button className="btn-twitter" block><span>twitter</span></Button>
-                    </Col>
-                  </Row>
-                </CardFooter>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+                </Row>
+              </Container>
+            </div>
     );
   }
 }
 
-export default Register;
+
+const mapStateToProps = (state) => {
+    return({
+        signedIn: state.account.signedIn
+    })
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        signIn: signIn
+    }, dispatch)
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Register));

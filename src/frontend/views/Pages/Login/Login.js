@@ -23,7 +23,8 @@ class Login extends Component {
       loggedIn:false,
       email: '',
       pass: '',
-      fullName: ''
+      fullName: '',
+      toLog: false
     }
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -56,15 +57,15 @@ class Login extends Component {
 
   render() {
      var signedIn = localStorage.signedIn === 'true' ? true : false;
-      //var userProfile = '/user/' + localStorage.uid;
-      let completeProf = '/completeprof/' + localStorage.uid;
+      var userProfile = '/user/' + localStorage.uid;
+      // let completeProf = '/completeprof/' + localStorage.uid;
 
       let stylishCard = {
           width: '50%'
       }
     return (
         this.state.loggedIn || signedIn ?
-            <Redirect to={completeProf} />
+            <Redirect to={userProfile} />
             :
             <div className="app flex-row align-items-center">
               <Container style={ stylishCard }>
