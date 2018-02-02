@@ -130,7 +130,7 @@ class CreateTour extends React.Component {
 
 
       let step = [<StepOne/>,<StepTwo/>, <StepThree/>];
-      let stepHeader = <h1>Step {this.state.number } </h1>
+      let stepHeader = <h1>Step {this.state.number } of 4 </h1>
       let displayStep = step[this.state.number -1 ];
 
 
