@@ -16,5 +16,3 @@ export default class StepThree extends React.Component {
 
 
 }
-
-
