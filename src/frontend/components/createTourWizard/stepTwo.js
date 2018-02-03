@@ -128,6 +128,10 @@ export default class StepTwo extends React.Component {
     let style = {
      height: '300px'
     }
+
+    let modalStyle = {
+        border: 'solid 2px blue'
+    }
     let tourId = this.props.tourId
     return (
      <div>
@@ -138,14 +142,10 @@ export default class StepTwo extends React.Component {
             onClick={this.toggle}> checkpoint 1<i class="fa fa-plus-circle" aria-hidden="true"></i>
           </Button>
 
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className='checkpoint-modal'>
+            <Modal isOpen={this.state.modal} toggle={this.toggle}  className='checkpoint-modal'>
             <ModalHeader toggle={this.toggle}>MAP</ModalHeader>
-            <ModalBody>
+            <ModalBody style={ modalStyle }>
               <div className='modal-main'>
-                  <div id='pac-container'>
-                    <input id='pac-input' type='text' placeholder='Enter a location' />
-                  </div>
-                  <div id='map' style={style}/>
                 <div className='modal-inputs'>
                   <Input type='text' placeholder='title/message'/>
                   <Input type='text' placeholder='Add destination or click on the map'/>
@@ -166,35 +166,14 @@ export default class StepTwo extends React.Component {
           <input type="number" ref="lat" placeholder='latitude'/>
           <input type="number" ref="long" placeholder='longitude' /> */}
           <Form>
-
-           <FormGroup>
-             <Label for="checkpoints">Checkpoint(s):</Label>
-             <Input type="text" ref="checkpointName" placeholder='name'/>
-           </FormGroup>
-           <FormGroup>
-             <Label>Coordinates:</Label>
-             <Input type="number" ref="lat" />
-             <Input type="number" ref="long"  />
-           </FormGroup>
-          <ul>
-              {
-                  this.state.checkpoints.length > 0 ?
-                  this.state.checkpoints.map((check, index) =>
-                      <li key={index}>Checkpoint Name: {check.checkpointName}, Lat: {check.lat}, Long: {check.long}</li>
-                  )
-                  :
-                  <li>No checkpoints</li>
-              }
-          </ul>
-          <Button onClick={this.makeCheckpoint}>Make Checkpoint</Button>
         </Form>
 
         </div>
         <div className='step-two-col-2'>
-          <div id='pac-container'>
-            <input id='pac-input' type='text' placeholder='Enter a location' />
-          </div>
-          <div id='map' />
+            <div id='pac-container'>
+              <input id='pac-input' type='text' placeholder='Enter a location' />
+            </div>
+            <div id='map'/>
         </div>
         {/* <p>{tourId}</p> */}
       </div>

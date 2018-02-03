@@ -43,6 +43,7 @@
         // margin: 10px;
         .user-name {
           // text-align: center;
+          font-weight: bold;
         }
         .user-location {
           // text-align: center;
@@ -75,20 +76,7 @@
       }
     }
     .tour-info {
-      // display: inline-block;
-      // float: left;
-      .card {
-        margin: 0;
-        .col {
-          ul {
-            li {
-              a {
-                border-radius: 6px;
-              }
-            }
-          }
-        }
-      }
+      margin-left: 15px;
     }
   }
 }
