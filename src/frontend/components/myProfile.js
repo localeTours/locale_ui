@@ -8,6 +8,7 @@ import {signIn} from "../actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 
+import { Jumbotron, Container } from 'reactstrap';
 
 
 class myProfile extends Component {
@@ -71,7 +72,11 @@ class myProfile extends Component {
                 }\
               "}</style>
 
-        <div className='profile-banner'></div>
+        <Jumbotron fluid>
+          <Container fluid>
+
+          </Container>
+        </Jumbotron>
         <div className='profile-image-btn-container'>
           <div className='profile-info'>
             <div>
@@ -80,10 +85,12 @@ class myProfile extends Component {
             <div className='user-details'>
               <div className='user-name'>Adel Charles</div>
               <div className='user-location'>Arizona, US</div>
-                  <div className='follow-btn-container'>
-                    <Button color="success"><i className="fa fa-magic"></i>&nbsp; Follow </Button>
-                  </div>
+
             </div>
+
+          </div>
+          <div className='follow-btn-container'>
+            <Button color="success"><i className="fa fa-magic"></i>&nbsp; Follow </Button>
           </div>
         </div>
 

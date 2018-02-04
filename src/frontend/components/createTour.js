@@ -12,11 +12,9 @@ import StepThree from './createTourWizard/stepThree';
 
 
 
-
-
 import { signIn } from '../actions';
 
-import { Button } from 'reactstrap';
+import { Button, Container } from 'reactstrap';
 
 
 class CreateTour extends React.Component {
@@ -135,17 +133,17 @@ class CreateTour extends React.Component {
 
 
         return (
-
-            <div className='create-tour-container'>
+          <Container className='create-tour-container'>
+            {/* <div className='create-tour-container'> */}
                 { stepHeader }
                 { displayStep }
                 <div className='tour-footer-btns'>
                     <Button className='cancel-btn' onClick={this.handleBackButton.bind(this)}>Cancel</Button>
                     <Button className='next-btn' onClick={this.handleNextStep.bind(this)} >Next</Button>
                 </div>
-            </div>
-        )
-
+            {/* </div> */}
+          </Container>
+        );
     }
 }
 
